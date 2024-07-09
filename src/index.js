@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid');
  const todoList={
 
  };
@@ -25,6 +26,6 @@ const assesStatusofToDo=(()=>{
 
  let todo =ToDo("clean the room","use the broom and the brush",'1/1/2025','very important');
  let todo1 =ToDo("clean the room well","use the broom and the brush",'1/1/2025','very important');
- todoList[`${Date.now()}`]=todo.getToDo();
- todoList[`${Date.now()}`]=todo1.getToDo();
- console.log(Object.keys(todoList).length)
+ todoList[`${uuidv4()}`]=todo.getToDo();
+ todoList[`${uuidv4()}`]=todo1.getToDo();
+ console.log(todoList)
