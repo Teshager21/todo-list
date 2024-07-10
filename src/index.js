@@ -13,11 +13,10 @@ addToDo:function(todo){
 
 },
 
-updateToDo:function(new_title,new_description,new_dueDate,new_priority){
-        title=new_title;
-        description=new_description;
-        dueDate=new_dueDate;
-        priority=new_priority;
+updateToDo:function(id,new_title,new_description,new_dueDate,new_priority,new_status){
+    let cache=JSON.parse(localStorage.getItem('todoList'));
+    cache[id]=ToDo(new_title,new_description,new_dueDate,new_priority,new_status).getToDo();
+    localStorage.setItem('todoList',JSON.stringify(cache));   
     },
 deleteToDo:function(id){
         let cache=JSON.parse(localStorage.getItem('todoList'));
@@ -27,17 +26,13 @@ deleteToDo:function(id){
     }
  };
  
- const ToDo=(title,description,dueDate,priority)=>{
+ const ToDo=(title,description,dueDate,priority,status)=>{
     title=title;
     description=description;
     dueDate =dueDate;
     priority=priority;
- let status;
- let todoList={};
+    status=status;
 const assesStatusofToDo=(()=>{
-    //overdue
-    //on progress
-    //Done
     const today=Date.now();
     const dueDateFormatted= new Date(dueDate).getTime();
     if(dueDateFormatted<today && status!=='done') status="overdue";
@@ -46,13 +41,8 @@ const assesStatusofToDo=(()=>{
 const updateStatusofToDo=(status)=>{
     status=status;
 }
-
-
  const getToDo=()=>{
     return {title,description,dueDate,priority,status}
- }
- const deleteToDO=()=>{
-
  }
  return {getToDo}
  }
@@ -63,5 +53,6 @@ const updateStatusofToDo=(status)=>{
 todoList.addToDo(todo.getToDo());
 todoList.addToDo(todo1.getToDo())
 todoList.deleteToDo(Object.keys(JSON.parse(localStorage.getItem('todoList')))[0]);
+todoList.updateToDo(Object.keys(JSON.parse(localStorage.getItem('todoList')))[0],"do 5S on the room","use the broom and the brush",'1/1/2025','very important')
  console.log(JSON.parse(localStorage['todoList']));
 
