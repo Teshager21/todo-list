@@ -37,27 +37,71 @@ deleteToDo:function(id){
         const today=Date.now();
         const dueDateFormatted= new Date(dueDate).getTime();
         if(dueDateFormatted<today && status!=='done') status="overdue";
-        if(dueDateFormatted>today && status!=='done') status='on progress';
+        //  if(dueDateFormatted>today && status!=='done') status='on progress';
     })();
-    const updateStatusofToDo=(status)=>{
-        status=status;
-    }
     const getToDo=()=>{
         return {title,description,dueDate,priority,status}
     }
     return {getToDo}
  }
 
- const updateStorage=(cache)=>{
-    localStorage.setItem('todoList',JSON.stringify({}));
+ const projects=()=>{
+    if(!localStorage.getItem('lisfOfProjects')){
+        localStorage.setItem('listOfProjects',JSON.stringify({}));
+    }
+    listOfProjects=JSON.parse(localStorage.getItem('listOfProjects'));
+    allProjects=()=>{
+        return listOfProjects;
+    };
+    const addToProjects=(project)=>{
+        listOfProjects[uuidv4()]=project;
+        console.log('been here.....',listOfProjects);
+    };
+    const readProject=(projectID)=>{
+       return listOfProjects[projectID]().getProject();
+    };
+    const removeProject=(projectID)=>{
+        delete listOfProjects[projectID]
+
+    };
+    const updateProject=(projectID,newProject)=>{
+       listOfProjects[projectID]=newProject;
+    };
+    return {allProjects,addToProjects,readProject,removeProject,updateProject}
  }
 
+ const Project=(title)=>{
+  title=title;
+  let todos={};
+  addToProject=(todoid)=>{
+     todos[uuidv4()]=todoid;  
+  }
+  removeFromProject=(todoid)=>{
+    delete todos[todoid]
+  }
+  getProject=()=>{
+    return todos;
+  }
+  return{addToProject,removeFromProject,getProject};
+ }
+const today=Project('today');
+const work=Project('work');
 todoList.addToDo(ToDo("clean the room","use the broom and the brush",'1/1/2025','very important').getToDo());
-todoList.addToDo(ToDo("clean the room well","use the broom and the brush",'1/1/2025','very important').getToDo())
-console.log('before deleting',todoList.readToDo(Object.keys(JSON.parse(localStorage.getItem('todoList')))[0]));
-todoList.deleteToDo(Object.keys(JSON.parse(localStorage.getItem('todoList')))[0]);
-todoList.updateToDo(Object.keys(JSON.parse(localStorage.getItem('todoList')))[0],"do 5S on the room","use the broom and the brush",'1/1/2025','very important')
- console.log(JSON.parse(localStorage['todoList']));
+todoList.addToDo(ToDo("Do your job","use the broom and the brush",'1/1/2025','very important').getToDo())
+// todoList.deleteToDo(Object.keys(JSON.parse(localStorage.getItem('todoList')))[0]);
+const todo1=Object.keys(JSON.parse(localStorage.getItem('todoList')))[0];
+const todo2=Object.keys(JSON.parse(localStorage.getItem('todoList')))[1];
+todoList.updateToDo(todo1,"do 5S on the room","use the broom and the brush",'1/1/2025','very important');
+today.addToProject(todo1);
+work.addToProject(todo2);
+today.addToProject(todo2);
+//  console.log(JSON.parse(localStorage['todoList']));
+const myProjects=projects();
+ myProjects.addToProjects(today);
+ console.log('projects',myProjects.allProjects())
+ myProjects.addToProjects(work);
+ console.log('today',today.getProject());
+ console.log('projects',myProjects.allProjects())
  
 
 
