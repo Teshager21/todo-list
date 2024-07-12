@@ -1,6 +1,7 @@
 import { todos} from './ToDos';
 import { projects} from './Projects';
 import { ToDoLists, ToDoList } from './ToDoList';
+import sidebar from './Sidebar';
 
 // const myProjects=projects();
 // const today=myProjects.createProject('today');
@@ -26,10 +27,18 @@ today.removeFromList(todo1);
 work.addToList(todo2)
 work.addToList(todo1);
 myToDoLists.deleteList(today.getID());
-// console.log('localStorage-projectlist',JSON.parse(localStorage['projectList']));
 console.log('mytodolist',myToDoLists.allToDoLists());
 console.log('reading work',myToDoLists.readList(work.getID()));
 console.log('localStorage-todos',JSON.parse(localStorage['todoLists']));
+
+
+//-------------THE VIEW------------------------------------------//
+
+const content= document.createElement('div')
+document.body.append(content);
+content.textContent="Here goes my todolist";
+content.append(sidebar);
+
 
  
 
