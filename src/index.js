@@ -2,6 +2,7 @@ import { todos} from './ToDos';
 import { projects} from './Projects';
 import { ToDoLists, ToDoList } from './ToDoList';
 import sidebar from './Sidebar';
+import main from './Main';
 
 // const myProjects=projects();
 // const today=myProjects.createProject('today');
@@ -37,7 +38,7 @@ console.log('localStorage-todos',JSON.parse(localStorage['todoLists']));
 const content= document.createElement('div')
 document.body.append(content);
 content.textContent="Here goes my todolist";
-content.append(sidebar);
+content.append(sidebar,main);
 
 
  
