@@ -9,16 +9,12 @@ const projects=()=>{
     };
     const createProject=(title)=>{
          let newProject=Project(title);
-         addToProjects(newProject);
+         projectList[newProject.getID()]=newProject.getProject();
+        localStorage.setItem('projectList',JSON.stringify(projectList)); 
          return newProject;
     };
-    const addToProjects=(project)=>{
-        
-        projectList[project.getID()]=project.getProject();
-        localStorage.setItem('projectList',JSON.stringify(projectList)); 
-    };
     const readProject=(projectID)=>{
-       return projectList[projectID]().getProject();
+       return projectList[projectID];
     };
     const deleteProject=(projectID)=>{
         delete projectList[projectID]
@@ -26,11 +22,11 @@ const projects=()=>{
 
     };
     const updateProject=(projectID,newProject)=>{
-       projectList[projectID]=newProject;
+       projectList[projectID]=newProject.getProject();
        localStorage.setItem('projectList',JSON.stringify(projectList)); 
     };
 
-    return {allProjects,createProject,addToProjects,readProject,deleteProject,updateProject}
+    return {allProjects,createProject,readProject,deleteProject,updateProject}
  }
 
  const Project=(title)=>{
