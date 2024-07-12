@@ -44,6 +44,7 @@ const createList=(name)=>{
  const deleteList=(todoListID)=>{
       delete todoLists[todoListID];
       localStorage.setItem('todoLists',JSON.stringify(todoLists));
+ }
 
  const updateList=(listID,newToDoList)=>{
     todoLists[listID]=newToDoList.getToDoList();
