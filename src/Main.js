@@ -1,9 +1,16 @@
 import todoCard from "./ToDoCard";
-const main=document.createElement('div');
-main.classList.add('main')
+const main=()=>{
+const Main=document.createElement('div');
+Main.classList.add('main')
 // main.textContent="Here goes the main";
-let todo=todoCard('This is the first to do',"Open");
-let todo2=todoCard('This must be the Second Task',"OverDue")
-main.append(todo,todo2);
+const addTodoCard=(title,status)=>{
+    let todo=todoCard(title,status);
+    Main.append(todo);
+}
+
+// let todo2=todoCard('This must be the Second Task',"OverDue")
+
+return {Main,addTodoCard};
+}
 
 export default main;

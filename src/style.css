@@ -6,9 +6,8 @@
 
 .content {
     display: grid;
-    grid-template-columns: 1fr 4fr;
+    grid-template-columns: 2fr 6fr;
     grid-auto-rows: 1fr;
-    /* background-color: tomato; */
     height: 100vh;
 }
 

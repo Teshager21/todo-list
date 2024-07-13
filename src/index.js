@@ -20,17 +20,26 @@ import './style.css'
 const myToDoLists= ToDoLists();
 const today=myToDoLists.createList('today');
 const work=myToDoLists.createList('work');
-const todo1=todos.createToDo("clean the room","use the broom and the brush",'1/1/2025','very important');
-const todo2= todos.createToDo("Do your job","use the broom and the brush",'1/1/2025','very important');
-console.log('the to do',todo1)
+const todo1=todos.createToDo("1. clean the room","use the broom and the brush",'1/1/2025','very important');
+const todo2= todos.createToDo("2. Do your job","use the broom and the brush",'1/1/2025','very important');
+const todo3= todos.createToDo("3. Clean the dishes","use the broom and the brush",'1/1/2025','important');
+
 today.addToList(todo1);
-console.log('today',today.getList(),today.getID());
-today.removeFromList(todo1);
-work.addToList(todo2)
+// console.log('today',today.getList(),today.getID());
+
+
+// console.log('after removal',today.getList())
 work.addToList(todo1);
-myToDoLists.deleteList(today.getID());
-console.log('mytodolist',myToDoLists.allToDoLists());
+work.addToList(todo2);
+work.addToList(todo3);
+// console.log('the to do',todo1,'the list b4 deletion',today.getList())
+work.removeFromList(todo2);
+// work.removeFromList(todo1);
+// console.log('the list after deletion;TODAY',today.getList())
+// myToDoLists.deleteList(today.getID());
+// console.log('mytodolist',Object.values(myToDoLists.allToDoLists()));
 console.log('reading work',myToDoLists.readList(work.getID()));
+console.log('reading today',myToDoLists.readList(today.getID()));
 console.log('localStorage-todos',JSON.parse(localStorage['todoLists']));
 
 
@@ -40,9 +49,21 @@ const content= document.createElement('div');
 content.classList.add('content');
 content.setAttribute('id','content');
 document.body.append(content);
-console.log(content.classList);
-content.append(sidebar,main);
+const mainComponent=main();
 
+//-------put todo into todocards-----//
+
+const displayList=(list)=>{
+    let todoArray= Object.values(list.getList())
+    todoArray.map((todo)=>{
+        const {title,priority}=todos.readToDo(todo);
+        mainComponent.addTodoCard(title,priority);  
+    })
+}
+
+displayList(work);
+
+content.append(sidebar,mainComponent.Main);
 
  
 

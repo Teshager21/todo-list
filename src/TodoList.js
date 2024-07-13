@@ -19,8 +19,10 @@ let id=uuidv4();
   todoList.push(todoID);
  };
   const removeFromList=(todoID)=>{
-   todoList=todoList.splice(todoList.indexOf(todoID),1);
- }
+    console.log('before delete',todoList)
+   todoList.splice(todoList.indexOf(todoID),1);
+   console.log('after delelte',todoList)
+ };
 
  return {getID,getList,addToList,removeFromList}
 
@@ -28,9 +30,7 @@ let id=uuidv4();
 
 const ToDoLists=()=>{
 let todoLists={};
-const allToDoLists=()=>{
-    return todoLists;
-}
+const allToDoLists=()=>{return todoLists;}
 const createList=(name)=>{
     let newToDoList=ToDoList(name);
     todoLists[newToDoList.getID()]=newToDoList.getList();
