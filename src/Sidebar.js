@@ -1,20 +1,35 @@
 import dialog from "./Dialog";
 const sidebar=document.createElement('aside');
 sidebar.classList.add('aside');
-//  sidebar.textContent="Here goes the side bar"
 
-const addBtn= document.createElement('button');
-addBtn.textContent="+ Add Task";
-addBtn.classList.add('btn')
-sidebar.appendChild(dialog);
-addBtn.addEventListener('click',()=>{
+const addListBtn=document.createElement('button');
+addListBtn.textContent="+Add ToDo List"
+addListBtn.classList.add('btn');
+addListBtn.addEventListener('click',()=>{
+    console.log('clicked the project list')
+})
+
+//add to do btn 
+const addTodoBtn= document.createElement('button');
+addTodoBtn.textContent="+ Add Task";
+addTodoBtn.classList.add('btn')
+addTodoBtn.addEventListener('click',()=>{
     dialog.showModal();
 })
+
+//todolists btn
+const showTodoLists= document.createElement('button');
+showTodoLists.textContent="Todo Lists";
+showTodoLists.classList.add('btn')
+
+
+sidebar.appendChild(dialog);
+
 const todoValues=dialog.addEventListener('close',(e)=>{
     return JSON.parse(dialog.returnValue);
 })
 console.log(todoValues)
-sidebar.append(addBtn);
+sidebar.append(addTodoBtn,addListBtn,showTodoLists);
 
 
 
@@ -24,4 +39,5 @@ sidebar.append(addBtn);
 
 
 
-export default sidebar;
+
+export {sidebar,showTodoLists};

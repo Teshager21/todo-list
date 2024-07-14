@@ -6,9 +6,8 @@ const ToDoList=(name)=>{
     if(!localStorage.getItem('todoLists')){
         localStorage.setItem('todoLists',JSON.stringify({}));
     }
-let id=uuidv4();
+let id=name;
  let todoList=[];
- name=name;
   const getID=()=>{ 
     return id;
  }

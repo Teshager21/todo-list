@@ -1,10 +1,11 @@
 import { todos} from './ToDos';
 import { projects} from './Projects';
 import { ToDoLists, ToDoList } from './ToDoList';
-import sidebar from './Sidebar';
+import {sidebar,showTodoLists }from './Sidebar';
 import main from './Main';
 import dialog from './Dialog';
-import './style.css'
+import './style.css';
+import { list } from 'postcss';
 
 // const myProjects=projects();
 // const today=myProjects.createProject('today');
@@ -14,26 +15,30 @@ import './style.css'
 // todos.updateToDo(todo1,"do 5S on the room","use the broom and the brush",'1/1/2025','very important');
 
 // today.addToDotoProject(todo1);  //asign a todo to a project
-// work.addToDotoProject(todo2);
+//  work.addToDotoProject(todo2);
 // today.addToDotoProject(todo2);
 // myProjects.deleteProject(work.getID());
 // today.deleteToDoFromProject(todo2);
 const myToDoLists= ToDoLists();
 const today=myToDoLists.createList('today');
 const work=myToDoLists.createList('work');
-// const todo1=todos.createToDo("1. clean the room","use the broom and the brush",'1/1/2025','very important');
-// const todo2= todos.createToDo("2. Do your job","use the broom and the brush",'1/1/2025','very important');
-// const todo3= todos.createToDo("3. Clean the dishes","use the broom and the brush",'1/1/2025','important');
+const todo1=todos.createToDo("1. clean the room","use the broom and the brush",'1/1/2025','very important');
+const todo2= todos.createToDo("2. Do your job","use the broom and the brush",'1/1/2025','very important');
+const todo3= todos.createToDo("3. Clean the dishes","use the broom and the brush",'1/1/2025','important');
 
-// today.addToList(todo3);
+//  today.addToList(todo3);
 // console.log('today',today.getList(),today.getID());
 
 
 // console.log('after removal',today.getList())
-//myToDoLists.addToList(work.getID(),todo1);
+// myToDoLists.addToList(work.getID(),todo1);
 // work.addToList(todo1);
 // work.addToList(todo2);
 // work.addToList(todo3);
+console.log('here goes the work id......',work.getID());
+myToDoLists.addToDoToList(todo1,work.getID());
+myToDoLists.addToDoToList(todo2,work.getID());
+myToDoLists.addToDoToList(todo3,work.getID());
 // console.log('the to do',todo1,'the list b4 deletion',today.getList())
 //  work.removeFromList(todo1);
 //  work.removeFromList(todo2);
@@ -68,6 +73,17 @@ const displayList=(list)=>{
     })
 }
 
+const displayLists=()=>{
+    mainComponent.Main.innerHTML=""; 
+    let listArray=Object.keys(myToDoLists.allToDoLists());
+    listArray.map((list)=>{
+        // console.log( 'theeeeeeeeeeeeeeeeee',list)
+        mainComponent.addTodoCard(list,'',list,'')
+       
+    })
+    // console.log(listArray) 
+}
+
 const deleteCard=(e)=>{
     const todoid=e.target.getAttribute('id');
     const listID=e.target.getAttribute('data-list')
@@ -75,7 +91,12 @@ const deleteCard=(e)=>{
     displayList(work);
 }
 
-displayList(work);
+// displayList(work);
+showTodoLists.addEventListener('click',()=>{
+    alert('showing....todolists');
+    displayLists();
+})
+
 
 dialog.addEventListener('close',(e)=>{
     const returnValues=JSON.parse(dialog.returnValue);
@@ -89,6 +110,7 @@ dialog.addEventListener('close',(e)=>{
 })
 
 content.append(sidebar,mainComponent.Main);
+
 
  
 
