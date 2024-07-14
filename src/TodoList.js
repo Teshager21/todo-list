@@ -17,11 +17,12 @@ let id=uuidv4();
  }
   const addToList=(todoID)=>{
   todoList.push(todoID);
+//   localStorage.setItem('todoLists',JSON.stringify(todoLists));
  };
   const removeFromList=(todoID)=>{
-    console.log('before delete',todoList)
+    // console.log('before delete',todoList)
    todoList.splice(todoList.indexOf(todoID),1);
-   console.log('after delelte',todoList)
+//    console.log('after delelte',todoList)
  };
 
  return {getID,getList,addToList,removeFromList}
@@ -46,12 +47,24 @@ const createList=(name)=>{
       localStorage.setItem('todoLists',JSON.stringify(todoLists));
  }
 
- const updateList=(listID,newToDoList)=>{
-    todoLists[listID]=newToDoList.getToDoList();
-    localStorage.setItem('todoLists',JSON.stringify(todoLists));
+ const removeToDoFromList=(todoID,listID)=>{
+    const newList=todoLists[listID];
+    newList.splice(newList.indexOf(todoID),1)
+    updateList(listID,newList);
  }
 
-return {allToDoLists,createList,readList,deleteList,updateList}
+ const updateList=(listID,newToDoList)=>{
+    console.log('-------todolist before',todoLists)
+    todoLists[listID]=newToDoList;
+    localStorage.setItem('todoLists',JSON.stringify(todoLists));
+    console.log('-----todolist after',todoLists)
+ };
+ const addToList=(todoListID,todoID)=>{
+    todoLists[todoListID].push(todoID);
+    localStorage.setItem('todoLists',JSON.stringify(todoLists));
+   };
+
+return {allToDoLists,createList,readList,deleteList,updateList,addToList,removeToDoFromList}
 }
 
 export {ToDoList,ToDoLists};

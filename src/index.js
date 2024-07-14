@@ -29,18 +29,20 @@ today.addToList(todo1);
 
 
 // console.log('after removal',today.getList())
+//myToDoLists.addToList(work.getID(),todo1);
 work.addToList(todo1);
 work.addToList(todo2);
 work.addToList(todo3);
 // console.log('the to do',todo1,'the list b4 deletion',today.getList())
-work.removeFromList(todo2);
-// work.removeFromList(todo1);
+//  work.removeFromList(todo1);
+//  work.removeFromList(todo2);
 // console.log('the list after deletion;TODAY',today.getList())
 // myToDoLists.deleteList(today.getID());
 // console.log('mytodolist',Object.values(myToDoLists.allToDoLists()));
 console.log('reading work',myToDoLists.readList(work.getID()));
-console.log('reading today',myToDoLists.readList(today.getID()));
+// console.log('reading today',myToDoLists.readList(today.getID()));
 console.log('localStorage-todos',JSON.parse(localStorage['todoLists']));
+console.log('mytodolist',myToDoLists.allToDoLists())
 
 
 //-------------THE VIEW------------------------------------------//
@@ -54,11 +56,22 @@ const mainComponent=main();
 //-------put todo into todocards-----//
 
 const displayList=(list)=>{
+    mainComponent.Main.innerHTML="";
     let todoArray= Object.values(list.getList())
     todoArray.map((todo)=>{
         const {title,priority}=todos.readToDo(todo);
-        mainComponent.addTodoCard(title,priority);  
+        let id=todo;
+         console.log('this is supposed to be the id',list.getID())
+        mainComponent.addTodoCard(title,priority,id,list.getID()); 
+        mainComponent.Main.addEventListener('click',deleteCard)
     })
+}
+
+const deleteCard=(e)=>{
+    const todoid=e.target.getAttribute('id');
+    const listID=e.target.getAttribute('data-list')
+    myToDoLists.removeToDoFromList(todoid,listID);
+    displayList(work);
 }
 
 displayList(work);
