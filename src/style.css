@@ -46,8 +46,66 @@
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
     border:none;
+    /* font-size: 1.2rem; */
+    border-radius: 0.25rem;
+}
+.btn-primary{
+    background-color: #1992d4;
+    color:white;
+}
+.btn-danger{
     background-color: transparent;
     color: tomato;
-    font-size: 1.2rem;
 }
+
+.dialog{
+    width: 80vh;
+    height: 45vh;
+    margin:auto;
+    border:1px solid grey;
+    border-radius: 0.5rem;
+}
+
+.close{
+    align-self: end;
+    font-size: 1rem;
+}
+
+.group{
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+#dueDateInput{
+ width: 40%;
+}
+
+.submit{
+    /* width: 40%; */
+    align-self:end;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    font-size: 1.2rem;
+    padding: 1rem;
+}
+
+#prioritySelect{
+    width: 40%;
+}
+
+::backdrop {
+    background-image: linear-gradient(
+      45deg,
+      magenta,
+      rebeccapurple,
+      dodgerblue,
+      green
+    );
+    opacity: 0.75;
+  }
 

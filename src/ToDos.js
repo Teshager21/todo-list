@@ -4,9 +4,15 @@ if(!localStorage.getItem('todos')){
 }
   
 const todos={
+id:uuidv4(),
+getID:function(){return this.id},
 cache:JSON.parse(localStorage.getItem('todos')),
 updateStorage:function(){
     localStorage.setItem('todos',JSON.stringify(this.cache)); 
+},
+
+getList:function(){
+    return Object.keys(this.cache);
 },
 
 createToDo:function(title,description,dueDate,priority,status){
@@ -30,7 +36,11 @@ updateToDo:function(id,new_title,new_description,new_dueDate,new_priority,new_st
 deleteToDo:function(id){
         delete this.cache[id];
         this.updateStorage();
-    }
+    },
+removeToDoFromList:function(todoid,todolist){
+    delete this.cache[todoid];
+    this.updateStorage();
+}
  };
  
  const ToDo=(title,description,dueDate,priority,status)=>{

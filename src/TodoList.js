@@ -12,12 +12,15 @@ let id=uuidv4();
   const getID=()=>{ 
     return id;
  }
+ const getName=()=>{
+    return name;
+ }
   const getList=()=>{
     return todoList;
  }
   const addToList=(todoID)=>{
   todoList.push(todoID);
-//   localStorage.setItem('todoLists',JSON.stringify(todoLists));
+  localStorage.setItem('todoLists',JSON.stringify(todoLists));
  };
   const removeFromList=(todoID)=>{
     // console.log('before delete',todoList)
@@ -53,6 +56,14 @@ const createList=(name)=>{
     updateList(listID,newList);
  }
 
+ const addToDoToList=(todoID,listID)=>{
+    const newList=todoLists[listID];
+    console.log("the list before",listID,todoLists)
+    newList.push(todoID);
+    updateList(listID,newList);
+    // localStorage.setItem('todoLists',JSON.stringify(todoLists)); 
+ }
+
  const updateList=(listID,newToDoList)=>{
     console.log('-------todolist before',todoLists)
     todoLists[listID]=newToDoList;
@@ -60,11 +71,12 @@ const createList=(name)=>{
     console.log('-----todolist after',todoLists)
  };
  const addToList=(todoListID,todoID)=>{
-    todoLists[todoListID].push(todoID);
+    console.log('been here',todoLists[todoListID]);
+    todoLists[todoListID].push(todoID); 
     localStorage.setItem('todoLists',JSON.stringify(todoLists));
    };
 
-return {allToDoLists,createList,readList,deleteList,updateList,addToList,removeToDoFromList}
+return {allToDoLists,createList,readList,deleteList,updateList,addToList,removeToDoFromList,addToDoToList}
 }
 
 export {ToDoList,ToDoLists};
