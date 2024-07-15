@@ -25,7 +25,7 @@ const todo1=todos.createToDo("1. clean the room","use the broom and the brush",'
 const todo2= todos.createToDo("2. Do your job","use the broom and the brush",'1/1/2025','very important');
 const todo3= todos.createToDo("3. Clean the dishes","use the broom and the brush",'1/1/2025','important');
 
-//  today.addToList(todo3);
+// today.addToList(todo3);
 // console.log('today',today.getList(),today.getID());
 
 
@@ -36,7 +36,7 @@ const todo3= todos.createToDo("3. Clean the dishes","use the broom and the brush
 // work.addToList(todo3);
 myToDoLists.addToDoToList(todo1,work.getID());
 myToDoLists.addToDoToList(todo2,work.getID());
-myToDoLists.addToDoToList(todo3,work.getID());
+myToDoLists.addToDoToList(todo3,today.getID());
 // console.log('the to do',todo1,'the list b4 deletion',today.getList())
 //  work.removeFromList(todo1);
 //  work.removeFromList(todo2);
@@ -59,14 +59,18 @@ const mainComponent=main();
 
 //-------put todo into todocards-----//
 
-const displayList=(list)=>{
+const displayList=(list,listID)=>{
     mainComponent.Main.innerHTML="";
-    let todoArray= Object.values(list.getList())
+    console.log('=========the list',list)
+    // if(list.getID()) console.log('the id of issue',list.getID())
+    let todoArray= Object.values(list)
+    console.log('the list length is,,,,',todoArray.length)
+    if(todoArray.length===0)return;
     todoArray.map((todo)=>{
-        console.log('the todo',todo)
+        console.log('===========the todo',todo)
         const {title,priority}=todos.readToDo(todo);
         let id=todo;
-        mainComponent.addTodoCard(title,priority,id,list.getID()); 
+        mainComponent.addTodoCard(title,priority,id,list); 
         mainComponent.Main.addEventListener('click',deleteCard)
     })
 }
@@ -74,12 +78,18 @@ const displayList=(list)=>{
 const displayLists=()=>{
     mainComponent.Main.innerHTML="";
     let listArray=Object.keys(myToDoLists.allToDoLists());
+   
     listArray.map((list)=>{
-        // console.log( 'theeeeeeeeeeeeeeeeee',list)
-        mainComponent.addTodoCard(list,'',list,'')
-       
+        if(list.length===0)return;
+        mainComponent.addListCard(list,list); 
     })
-    // console.log(listArray) 
+    mainComponent.Main.addEventListener('click',showListToDos)
+}
+
+const showListToDos=(e)=>{
+    const list=myToDoLists.readList(e.target.getAttribute('data-list'))
+    console.log('list when show is clicked....',list, '   and the attr',e.target.getAttribute('data-list'))
+    displayList(list,list);
 }
 
 const deleteCard=(e)=>{
@@ -99,15 +109,13 @@ dialog.addEventListener('close',(e)=>{
     const returnValues=JSON.parse(dialog.returnValue);
     const {title,duedate,priority}=returnValues
     const todoID=todos.createToDo(title,'',duedate,priority,)
-    console.log('work b4 addition',work.getList())
+    //just testing
     myToDoLists.addToDoToList(todoID,work.getID());
-    console.log('work after addition',work.getList());
     displayList(work);
    
 })
 
 listDialog.addEventListener('close',()=>{
-    console.log('returned.....',listDialog.returnValue)
     myToDoLists.createList(listDialog.returnValue);
     displayLists();
 })
