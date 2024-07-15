@@ -3,7 +3,7 @@ import { projects} from './Projects';
 import { ToDoLists, ToDoList } from './ToDoList';
 import {sidebar,showTodoLists }from './Sidebar';
 import main from './Main';
-import dialog from './Dialog';
+import {dialog,listDialog} from './Dialog';
 import './style.css';
 import { list } from 'postcss';
 
@@ -13,7 +13,6 @@ import { list } from 'postcss';
 // const todo1=todos.createToDo("clean the room","use the broom and the brush",'1/1/2025','very important');
 // const todo2= todos.createToDo("Do your job","use the broom and the brush",'1/1/2025','very important');
 // todos.updateToDo(todo1,"do 5S on the room","use the broom and the brush",'1/1/2025','very important');
-
 // today.addToDotoProject(todo1);  //asign a todo to a project
 //  work.addToDotoProject(todo2);
 // today.addToDotoProject(todo2);
@@ -35,7 +34,6 @@ const todo3= todos.createToDo("3. Clean the dishes","use the broom and the brush
 // work.addToList(todo1);
 // work.addToList(todo2);
 // work.addToList(todo3);
-console.log('here goes the work id......',work.getID());
 myToDoLists.addToDoToList(todo1,work.getID());
 myToDoLists.addToDoToList(todo2,work.getID());
 myToDoLists.addToDoToList(todo3,work.getID());
@@ -74,7 +72,7 @@ const displayList=(list)=>{
 }
 
 const displayLists=()=>{
-    mainComponent.Main.innerHTML=""; 
+    mainComponent.Main.innerHTML="";
     let listArray=Object.keys(myToDoLists.allToDoLists());
     listArray.map((list)=>{
         // console.log( 'theeeeeeeeeeeeeeeeee',list)
@@ -93,10 +91,9 @@ const deleteCard=(e)=>{
 
 // displayList(work);
 showTodoLists.addEventListener('click',()=>{
-    alert('showing....todolists');
     displayLists();
 })
-
+sidebar.child
 
 dialog.addEventListener('close',(e)=>{
     const returnValues=JSON.parse(dialog.returnValue);
@@ -107,6 +104,12 @@ dialog.addEventListener('close',(e)=>{
     console.log('work after addition',work.getList());
     displayList(work);
    
+})
+
+listDialog.addEventListener('close',()=>{
+    console.log('returned.....',listDialog.returnValue)
+    myToDoLists.createList(listDialog.returnValue);
+    displayLists();
 })
 
 content.append(sidebar,mainComponent.Main);

@@ -70,10 +70,28 @@ dialog.addEventListener("click", (event) => {
     }
 })
 
+
+
 btnSubmit.addEventListener('click',(e)=>{
     e.preventDefault();
     const returnValues={'title':taskNameInput.value,'duedate':dueDateInput.value,'priority':prioritySelect.value};
     dialog.close(JSON.stringify(returnValues))
 })
 
-export default dialog;
+const listDialog=document.getElementById('listDialog');
+const listNameInput=document.getElementById('listNameInput')
+listDialog.addEventListener("click", (event) => {
+    const rect = listDialog.getBoundingClientRect()
+    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) {
+        listDialog.close()
+    }
+     
+})
+
+const confirmList=document.getElementById('confirmList');
+confirmList.addEventListener('click',(e)=>{
+    e.preventDefault();
+    listDialog.close(listNameInput.value);
+})
+
+export {dialog,listDialog,confirmList};

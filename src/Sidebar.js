@@ -1,4 +1,4 @@
-import dialog from "./Dialog";
+import {dialog} from "./Dialog";
 const sidebar=document.createElement('aside');
 sidebar.classList.add('aside');
 
@@ -7,6 +7,7 @@ addListBtn.textContent="+Add ToDo List"
 addListBtn.classList.add('btn');
 addListBtn.addEventListener('click',()=>{
     console.log('clicked the project list')
+    document.getElementById('listDialog').showModal();
 })
 
 //add to do btn 
@@ -28,6 +29,7 @@ sidebar.appendChild(dialog);
 const todoValues=dialog.addEventListener('close',(e)=>{
     return JSON.parse(dialog.returnValue);
 })
+
 console.log(todoValues)
 sidebar.append(addTodoBtn,addListBtn,showTodoLists);
 
