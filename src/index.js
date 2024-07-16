@@ -62,28 +62,32 @@ const mainComponent=main();
 
 const displayList=(list,listID)=>{
     mainComponent.Main.innerHTML="";
-    // console.log('=========the list',list)
-    // if(list.getID()) console.log('the id of issue',list.getID())
     let todoArray= Object.values(list)
-    // console.log('the list length is,,,,',todoArray.length)
     if(todoArray.length===0)return;
     todoArray.map((todo)=>{
-        // console.log('===========the todo',todo)
         const {title,priority}=todos.readToDo(todo);
         let id=todo;
         mainComponent.addTodoCard(title,priority,id,list); 
-        // mainComponent.Main.addEventListener('click',deleteCard)
     })
 }
 
 const displayListArray=(list,listID)=>{
     mainComponent.Main.innerHTML="";
     if(list){
-    list.map((todo)=>{
-        const {title,priority}=todos.readToDo(todo);
-        let id=todo;
-        mainComponent.addTodoCard(title,priority,id,listID); 
+    list.map((todoID)=>{
+        const {title,priority}=todos.readToDo(todoID);
+        mainComponent.addTodoCard(title,priority,todoID,listID||'delete'); 
+        let counter=mainComponent.Main.children.length-1;
+        mainComponent.Main.children[counter].addEventListener('click',(e)=>deleteToDo(e,todoID));
     })};
+}
+
+const deleteToDo=(e,todoID)=>{
+    if(e.target.nodeName==='BUTTON' && e.target.getAttribute('data-list')==='delete'){
+        todos.deleteToDo(todoID);
+        displayListArray(todos.getList());
+    }
+  
 }
 
 const displayLists=()=>{
@@ -95,7 +99,7 @@ const displayLists=()=>{
         mainComponent.addListCard(list,list);
         let counter=mainComponent.Main.children.length-1;
         mainComponent.Main.children[counter].addEventListener('click',showListToDos)
-        mainComponent.Main.addEventListener('click',deleteToDo)
+        mainComponent.Main.addEventListener('click',removeToDo)
     })
 }
 
@@ -105,7 +109,7 @@ const showListToDos=(e)=>{
     displayListArray(list,listName);
 }
 
-const deleteToDo=(e)=>{
+const removeToDo=(e)=>{
     if(e.target.nodeName!=='BUTTON') {
         return;}
     const todoid=e.target.getAttribute('id');
@@ -136,7 +140,6 @@ listDialog.addEventListener('close',()=>{
 })
 
 Tasks.addEventListener('click',()=>{
-    console.log(todos.getList());
     displayListArray(todos.getList());
 
 })

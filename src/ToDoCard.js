@@ -11,12 +11,8 @@ const todoCard=(title,status,id,list)=>{
     deleteBtn.textContent='Delete';
     deleteBtn.setAttribute('id',id);
     deleteBtn.setAttribute('data-list',list)
-    // deleteBtn.addEventListener('click',(e)=>{
-    //     console.log("hello, i am delete",e.target);
-    // })
     todoCard.append(deleteBtn);
     const Status =document.createElement('span');
-    // todoCard.append(Status);
     Status.textContent=status;
     return todoCard;
 }
@@ -32,11 +28,10 @@ const listCard=(title,id)=>{
     deleteBtn.classList.add('btn','btn-danger');
     deleteBtn.textContent='Delete';
     deleteBtn.setAttribute('id',id);
-    // console.log('the iddddddddddddddd',id)
     listCard.setAttribute('data-list',id)
-    deleteBtn.addEventListener('click',(e)=>{
-        console.log("hello, i am delete",e.target);
-    })
+    // deleteBtn.addEventListener('click',(e)=>{
+    //     console.log("hello, i am delete",e.target);
+    // })
    
     const addToDo =document.createElement('span');
    
