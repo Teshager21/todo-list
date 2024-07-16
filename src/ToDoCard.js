@@ -28,11 +28,7 @@ const listCard=(title,id)=>{
     deleteBtn.classList.add('btn','btn-danger');
     deleteBtn.textContent='Delete';
     deleteBtn.setAttribute('id',id);
-    listCard.setAttribute('data-list',id)
-    // deleteBtn.addEventListener('click',(e)=>{
-    //     console.log("hello, i am delete",e.target);
-    // })
-   
+    listCard.setAttribute('data-list',id);
     const addToDo =document.createElement('span');
    
     addToDo.textContent="+ To do";

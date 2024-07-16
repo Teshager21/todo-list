@@ -63,14 +63,9 @@ dialogContainer.append(btnSubmit);
 
 // dialog.appendChild(btnClose);
 dialog.append(dialogContainer);
-dialog.addEventListener("click", (event) => {
-    const rect = dialog.getBoundingClientRect()
-    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) {
-        dialog.close()
-    }
-})
-
-
+dialog.addEventListener("click", (event) =>{
+    closeDialog(event,dialog)
+});
 
 btnSubmit.addEventListener('click',(e)=>{
     e.preventDefault();
@@ -78,14 +73,17 @@ btnSubmit.addEventListener('click',(e)=>{
     dialog.close(JSON.stringify(returnValues))
 })
 
+const closeDialog=(event,dialog)=>{
+    const rect = dialog.getBoundingClientRect()
+    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) {
+        dialog.close()
+    }
+}
+
 const listDialog=document.getElementById('listDialog');
 const listNameInput=document.getElementById('listNameInput')
 listDialog.addEventListener("click", (event) => {
-    const rect = listDialog.getBoundingClientRect()
-    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) {
-        listDialog.close()
-    }
-     
+    closeDialog(event,listDialog);    
 })
 
 const confirmList=document.getElementById('confirmList');
@@ -94,4 +92,30 @@ confirmList.addEventListener('click',(e)=>{
     listDialog.close(listNameInput.value);
 })
 
-export {dialog,listDialog,confirmList};
+const ImportDialog=document.getElementById("importTasks");
+const setOptions=(list)=>{
+    const taskList=list.map((el)=>{
+        return el.task;
+    })
+    const IDlist=list.map((el)=>{
+        return el.id;
+    })
+    // console.log("task list",taskList);
+    taskList.map((option)=>{
+        const optionElement=new Option(option);
+        optionElement.setAttribute('id',IDlist[taskList.indexOf(option)]);
+        // console.log(optionElement);
+        ImportDialog.querySelector('#importTaskSelect').add(optionElement);
+
+    })
+}
+const confrimImportBtn=document.getElementById('importTaskBtn');
+confrimImportBtn.addEventListener('click',()=>{
+    const selectElement=ImportDialog.querySelector('#importTaskSelect');
+    const selectedOption=selectElement.options[selectElement.selectedIndex];
+    ImportDialog.close( JSON.stringify({taskID:selectedOption.getAttribute("id"),listID:ImportDialog.getAttribute('data-list')}));  
+})
+
+ImportDialog.addEventListener('click',(e)=>closeDialog(e,ImportDialog));
+
+export {dialog,listDialog,confirmList,ImportDialog,setOptions};
