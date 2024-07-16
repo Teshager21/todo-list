@@ -21,7 +21,12 @@ addTodoBtn.addEventListener('click',()=>{
 //todolists btn
 const showTodoLists= document.createElement('button');
 showTodoLists.textContent="Todo Lists";
-showTodoLists.classList.add('btn')
+showTodoLists.classList.add('btn');
+
+//Tasks btn
+const Tasks= document.createElement('button');
+Tasks.textContent="All Tasks";
+Tasks.classList.add('btn')
 
 
 sidebar.appendChild(dialog);
@@ -31,7 +36,7 @@ const todoValues=dialog.addEventListener('close',(e)=>{
 })
 
 console.log(todoValues)
-sidebar.append(addTodoBtn,addListBtn,showTodoLists);
+sidebar.append(addTodoBtn,addListBtn,showTodoLists,Tasks);
 
 
 
@@ -42,4 +47,4 @@ sidebar.append(addTodoBtn,addListBtn,showTodoLists);
 
 
 
-export {sidebar,showTodoLists};
+export {sidebar,showTodoLists,Tasks};

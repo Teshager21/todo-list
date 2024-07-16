@@ -3,8 +3,8 @@ const main=()=>{
 const Main=document.createElement('div');
 Main.classList.add('main')
 // main.textContent="Here goes the main";
-const addTodoCard=(title,status,id,list)=>{
-    let todo=todoCard(title,status,id,list);
+const addTodoCard=(title,priority,id,list)=>{
+    let todo=todoCard(title,priority,id,list);
     Main.append(todo);
 }
 

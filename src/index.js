@@ -6,6 +6,7 @@ import main from './Main';
 import {dialog,listDialog} from './Dialog';
 import './style.css';
 import { list } from 'postcss';
+import { Tasks } from './Sidebar';
 
 // const myProjects=projects();
 // const today=myProjects.createProject('today');
@@ -43,10 +44,10 @@ myToDoLists.addToDoToList(todo3,today.getID());
 // console.log('the list after deletion;TODAY',today.getList())
 // myToDoLists.deleteList(today.getID());
 // console.log('mytodolist',Object.values(myToDoLists.allToDoLists()));
-console.log('reading work',myToDoLists.readList(work.getID()));
+// console.log('reading work',myToDoLists.readList(work.getID()));
 // console.log('reading today',myToDoLists.readList(today.getID()));
-console.log('localStorage-todos',JSON.parse(localStorage['todoLists']));
-console.log('mytodolist',myToDoLists.allToDoLists())
+// console.log('localStorage-todos',JSON.parse(localStorage['todoLists']));
+// console.log('mytodolist',myToDoLists.allToDoLists())
 
 
 //-------------THE VIEW------------------------------------------//
@@ -61,46 +62,60 @@ const mainComponent=main();
 
 const displayList=(list,listID)=>{
     mainComponent.Main.innerHTML="";
-    console.log('=========the list',list)
+    // console.log('=========the list',list)
     // if(list.getID()) console.log('the id of issue',list.getID())
     let todoArray= Object.values(list)
-    console.log('the list length is,,,,',todoArray.length)
+    // console.log('the list length is,,,,',todoArray.length)
     if(todoArray.length===0)return;
     todoArray.map((todo)=>{
-        console.log('===========the todo',todo)
+        // console.log('===========the todo',todo)
         const {title,priority}=todos.readToDo(todo);
         let id=todo;
         mainComponent.addTodoCard(title,priority,id,list); 
-        mainComponent.Main.addEventListener('click',deleteCard)
+        // mainComponent.Main.addEventListener('click',deleteCard)
     })
+}
+
+const displayListArray=(list,listID)=>{
+    mainComponent.Main.innerHTML="";
+    if(list){
+    list.map((todo)=>{
+        const {title,priority}=todos.readToDo(todo);
+        let id=todo;
+        mainComponent.addTodoCard(title,priority,id,listID); 
+    })};
 }
 
 const displayLists=()=>{
     mainComponent.Main.innerHTML="";
     let listArray=Object.keys(myToDoLists.allToDoLists());
-   
+    
     listArray.map((list)=>{
         if(list.length===0)return;
-        mainComponent.addListCard(list,list); 
+        mainComponent.addListCard(list,list);
+        let counter=mainComponent.Main.children.length-1;
+        mainComponent.Main.children[counter].addEventListener('click',showListToDos)
+        mainComponent.Main.addEventListener('click',deleteToDo)
     })
-    mainComponent.Main.addEventListener('click',showListToDos)
 }
 
 const showListToDos=(e)=>{
-    const list=myToDoLists.readList(e.target.getAttribute('data-list'))
-    console.log('list when show is clicked....',list, '   and the attr',e.target.getAttribute('data-list'))
-    displayList(list,list);
+    const listName=e.target.getAttribute('data-list');
+    const list=myToDoLists.readList(listName);
+    displayListArray(list,listName);
 }
 
-const deleteCard=(e)=>{
+const deleteToDo=(e)=>{
+    if(e.target.nodeName!=='BUTTON') {
+        return;}
     const todoid=e.target.getAttribute('id');
-    const listID=e.target.getAttribute('data-list')
+    const listID=e.target.getAttribute('data-list');
     myToDoLists.removeToDoFromList(todoid,listID);
-    displayList(work);
+    displayListArray(myToDoLists.readList(listID),listID);
 }
 
-// displayList(work);
 showTodoLists.addEventListener('click',()=>{
+    
     displayLists();
 })
 sidebar.child
@@ -111,13 +126,19 @@ dialog.addEventListener('close',(e)=>{
     const todoID=todos.createToDo(title,'',duedate,priority,)
     //just testing
     myToDoLists.addToDoToList(todoID,work.getID());
-    displayList(work);
+    displayListArray(work.getList(),work.getID());
    
 })
 
 listDialog.addEventListener('close',()=>{
     myToDoLists.createList(listDialog.returnValue);
     displayLists();
+})
+
+Tasks.addEventListener('click',()=>{
+    console.log(todos.getList());
+    displayListArray(todos.getList());
+
 })
 
 content.append(sidebar,mainComponent.Main);
