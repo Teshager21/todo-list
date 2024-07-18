@@ -76,7 +76,7 @@ btnSubmit.addEventListener('click',(e)=>{
 const closeDialog=(event,dialog)=>{
     const rect = dialog.getBoundingClientRect()
     if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) {
-        dialog.close()
+        dialog.close(null);
     }
 }
 
@@ -89,7 +89,8 @@ listDialog.addEventListener("click", (event) => {
 const confirmList=document.getElementById('confirmList');
 confirmList.addEventListener('click',(e)=>{
     e.preventDefault();
-    listDialog.close(listNameInput.value);
+    console.log('returning from list dialog',listNameInput.value)
+    if(listNameInput.value!==null)listDialog.close(listNameInput.value);
 })
 
 const ImportDialog=document.getElementById("importTasks");

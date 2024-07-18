@@ -11,6 +11,7 @@ const todoCard=(title,status,id,list)=>{
     deleteBtn.textContent='Delete';
     deleteBtn.setAttribute('id',id);
     deleteBtn.setAttribute('data-list',list)
+    deleteBtn.setAttribute('data-action','delete');
     todoCard.append(deleteBtn);
     const Status =document.createElement('span');
     Status.textContent=status;
@@ -28,13 +29,14 @@ const listCard=(title,id)=>{
     deleteBtn.classList.add('btn','btn-danger');
     deleteBtn.textContent='Delete';
     deleteBtn.setAttribute('id',id);
+    deleteBtn.setAttribute('data-action','delete');
     listCard.setAttribute('data-list',id);
     const addToDo =document.createElement('span');
    
     addToDo.textContent="+ To do";
     const actions=document.createElement('div')
     actions.append(addToDo);
-    listCard.append(title);
+    listCard.append(title,deleteBtn);
     return listCard;
 
 }

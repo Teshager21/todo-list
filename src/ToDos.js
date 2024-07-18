@@ -1,6 +1,11 @@
+import { ToDoLists } from './ToDoList';
+
 const { v4: uuidv4 } = require('uuid');
+// import { ToDoLists } from './ToDoList';
+
 if(!localStorage.getItem('todos')){
     localStorage.setItem('todos',JSON.stringify({}));
+    console.log('initializing todos............')
 }
   
 const todos={
@@ -35,6 +40,20 @@ updateToDo:function(id,new_title,new_description,new_dueDate,new_priority,new_st
     },
 deleteToDo:function(id){
         delete this.cache[id];
+        const todoLists=JSON.parse(localStorage.getItem('todoLists'));
+        const todoListsKeys=Object.keys(JSON.parse(localStorage.getItem('todoLists')));
+        for(const todoID of todoListsKeys){
+            (todoLists[todoID]).forEach(taskID => {
+                
+                if(id===taskID){
+                    const tasks=todoLists[todoID];
+                    tasks.splice(tasks.indexOf(taskID),1);
+                    todoLists[todoID]=tasks;
+                    localStorage.setItem('todoLists',JSON.stringify(todoLists));
+                    
+                }
+            });
+        }
         this.updateStorage();
     },
 removeToDoFromList:function(todoid,todolist){

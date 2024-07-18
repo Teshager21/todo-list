@@ -8,49 +8,7 @@ import './style.css';
 import { list } from 'postcss';
 import { Tasks } from './Sidebar';
 
-// const myProjects=projects();
-// const today=myProjects.createProject('today');
-// const work= myProjects.createProject('work');
-// const todo1=todos.createToDo("clean the room","use the broom and the brush",'1/1/2025','very important');
-// const todo2= todos.createToDo("Do your job","use the broom and the brush",'1/1/2025','very important');
-// todos.updateToDo(todo1,"do 5S on the room","use the broom and the brush",'1/1/2025','very important');
-// today.addToDotoProject(todo1);  //asign a todo to a project
-//  work.addToDotoProject(todo2);
-// today.addToDotoProject(todo2);
-// myProjects.deleteProject(work.getID());
-// today.deleteToDoFromProject(todo2);
-const myToDoLists= ToDoLists();
-const today=myToDoLists.createList('today');
-const work=myToDoLists.createList('work');
-const todo1=todos.createToDo("1. clean the room","use the broom and the brush",'1/1/2025','very important');
-const todo2= todos.createToDo("2. Do your job","use the broom and the brush",'1/1/2025','very important');
-const todo3= todos.createToDo("3. Clean the dishes","use the broom and the brush",'1/1/2025','important');
-// console.log('today',today.getList(),today.getID())
-// today.addToList(todo3);
-// console.l=og('after removal',today.getList()
-
-// myToDoLists.addToList(work.getID(),todo1);
-// work.addToList(todo1);
-// work.addToList(todo2);
-// work.addToList(todo3);
-// if(Object.keys(myToDoLists).length===0){
-    myToDoLists.addToDoToList(todo1,work.getID());
-    myToDoLists.addToDoToList(todo2,work.getID());
-    myToDoLists.addToDoToList(todo3,today.getID());
-    // console.log('the to do',todo1,'t=he list b4 deletion',today.getList())
-//
-
-// console.log('the list after deletio=n;TODAY',today.getList())
-//   work.removeFromList(todo1);
-// console=.log('mytodolist',Object.values(myToDoLists.allToDoLists()));
-  work.removeFromList(todo2);
-// myToDoLists.deleteList(today.getID());
-// console.log('reading work',myToDoLists.readList(work.getID()));
-// console.log('reading today',myToDoLists.readList(today.getID()));
-// console.log('localStorage-todos',JSON.parse(localStorage['todoLists']));
-// console.log('mytodolist',myToDoLists.allToDoLists())
-
-
+let myToDoLists= ToDoLists();
 //-------------THE VIEW------------------------------------------//
 
 const content= document.createElement('div');
@@ -69,7 +27,7 @@ const displayList=(list,listID)=>{
         const {title,priority}=todos.readToDo(todo);
         let id=todo;
         mainComponent.addTodoCard(title,priority,id,list); 
-        mainComponent.addActions('list',listID);
+        mainComponent.addActions('',listID);
     })
 }
 
@@ -78,18 +36,21 @@ const displayListArray=(list,listID)=>{
     if(list){
     list.map((todoID)=>{
         const {title,priority}=todos.readToDo(todoID);
+        mainComponent.setTitle(listID); 
         mainComponent.addTodoCard(title,priority,todoID,listID||'delete'); 
         let counter=mainComponent.Cards.children.length-1;
+        console.log('the to do id',todoID);
         mainComponent.Cards.children[counter].addEventListener('click',(e)=>deleteToDo(e,todoID));
-        mainComponent.Actions.addEventListener('click',(e)=>{handleAction(e)})
+        mainComponent.Actions.addEventListener('click',(e)=>handleAction(e));
+        if(listID!=="All Tasks") mainComponent.addActions('list',listID);
+        
     })};
 }
 
 const handleAction=(e)=>{
+    console.log('handling............')
 if(e.target.getAttribute('data-action')==="import"){
-    console.log('handling actions');
     let todosArray=[];
-    // let todoIDArray=[];
     todos.getList().map((todoID)=>{
         todosArray.push({task:todos.readToDo(todoID).title,id:todoID});
     })
@@ -99,39 +60,64 @@ if(e.target.getAttribute('data-action')==="import"){
 }
 
 const deleteToDo=(e,todoID)=>{
-    if(e.target.nodeName==='BUTTON' && e.target.getAttribute('data-list')==='delete'){
+    console.log('wer are deletiiiii....ng',e.target.nodeName, e.target.getAttribute('data-action'));
+    if(e.target.nodeName==='BUTTON' && e.target.getAttribute('data-action')==='delete'){
+        console.log("deleting  to do",todoID)
         todos.deleteToDo(todoID);
+        myToDoLists.importLists(JSON.parse(localStorage.getItem('todoLists')));
+        console.log('----------------------------------')
         displayListArray(todos.getList());
+        console.log('----------------------------------')
     }
   
 }
 
 const displayLists=()=>{
     mainComponent.Cards.innerHTML="";
+    // console.log('the supposed list of todos',(myToDoLists.allToDoLists()))
+    if(myToDoLists.allToDoLists()===null||myToDoLists.allToDoLists()===undefined) return;
     let listArray=Object.keys(myToDoLists.allToDoLists());
     
     listArray.map((list)=>{
         if(list.length===0)return;
+        mainComponent.setTitle("Lists")
         mainComponent.addListCard(list,list);
         let counter=mainComponent.Cards.children.length-1;
-        mainComponent.Cards.children[counter].addEventListener('click',showListToDos)
-        mainComponent.Cards.addEventListener('click',removeToDo)
+        mainComponent.Cards.children[counter].addEventListener('click',handleListActions)
+        //mainComponent.Cards.addEventListener('click',);
+        mainComponent.addActions('lists','todos');
     })
+}
+
+const handleListActions=(e)=>{
+    if(e.target.nodeName==="BUTTON" && e.target.getAttribute('data-action')==='delete'){
+           myToDoLists.deleteList(e.target.getAttribute('id'));
+           displayLists();
+    }else  showListToDos(e)
+   
 }
 
 const showListToDos=(e)=>{
     const listName=e.target.getAttribute('data-list');
+    myToDoLists.importLists(JSON.parse(localStorage.getItem('todoLists')));
+    console.log('todo list @ showListToDos',myToDoLists.allToDoLists());
     const list=myToDoLists.readList(listName);
+    mainComponent.setTitle(listName)
+    console.log('calling display array on :',list,listName)
     displayListArray(list,listName);
+    console.log('Called........');
     mainComponent.addActions('list',listName);
 }
 
-const removeToDo=(e)=>{
-    if(e.target.nodeName!=='BUTTON') {
-        return;}
+const removeToDo=(e,list)=>{
+    
+    if(e.target.nodeName!=='BUTTON') return;
     const todoid=e.target.getAttribute('id');
     const listID=e.target.getAttribute('data-list');
+    console.log(listID===list);
+    console.log(listID,list);
     myToDoLists.removeToDoFromList(todoid,listID);
+    console.log(todoid,listID);
     displayListArray(myToDoLists.readList(listID),listID);
 }
 
@@ -141,32 +127,28 @@ showTodoLists.addEventListener('click',()=>{
 sidebar.child
 
 dialog.addEventListener('close',(e)=>{
+    if(dialog.returnValue==='null') return;
     const returnValues=JSON.parse(dialog.returnValue);
     const {title,duedate,priority}=returnValues
-    const todoID=todos.createToDo(title,'',duedate,priority,)
-    //just testing
-    myToDoLists.addToDoToList(todoID,work.getID());
-    displayListArray(work.getList(),work.getID());
-   
+    const todoID=todos.createToDo(title,'',duedate,priority,);
+    displayLists();
 })
 
 listDialog.addEventListener('close',()=>{
+    console.log((listDialog.returnValue==='null'));
+    if((listDialog.returnValue)==="null") return;
     myToDoLists.createList(listDialog.returnValue);
     displayLists();
 });
 
 ImportDialog.addEventListener('close',()=>{
     const dialogReturn=JSON.parse(ImportDialog.returnValue); 
-    console.log('the return was',dialogReturn.taskID,dialogReturn.listID)
-    console.log(todos.readToDo(dialogReturn.taskID));
-    console.log(myToDoLists.readList(dialogReturn.listID))
     myToDoLists.addToDoToList(dialogReturn.taskID,dialogReturn.listID);
-   
     displayListArray(myToDoLists.readList(dialogReturn.listID),dialogReturn.listID);
 });
 
 Tasks.addEventListener('click',()=>{
-    displayListArray(todos.getList());
+    displayListArray(todos.getList(),"All Tasks");
 });
 
 content.append(sidebar,mainComponent.Main);

@@ -31,11 +31,17 @@ let id=name;
 
 const ToDoLists=()=>{
     let todoLists;
-    if(!localStorage.getItem('todoLists')){
+    console.log('we are in todolists');
+    if(localStorage.getItem('todoLists')===null){
+      console.log('there is noooo list in local storage');
         localStorage.setItem('todoLists',JSON.stringify({}));
     }else{
+      console.log('there is a list in local storage');
        todoLists=JSON.parse(localStorage.getItem('todoLists'));
     }
+   const importLists=(lists)=>{
+          todoLists=lists;
+   }
 
 const allToDoLists=()=>{return todoLists;}
 const createList=(name)=>{
@@ -74,7 +80,7 @@ const createList=(name)=>{
     localStorage.setItem('todoLists',JSON.stringify(todoLists));
    };
 
-return {allToDoLists,createList,readList,deleteList,updateList,addToList,removeToDoFromList,addToDoToList}
+return {allToDoLists,createList,readList,deleteList,updateList,addToList,removeToDoFromList,addToDoToList,importLists}
 }
 
 export {ToDoList,ToDoLists};
