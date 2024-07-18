@@ -94,6 +94,12 @@ dialog{
     padding: 1rem;
 }
 
+.actionBar{
+    display: flex;
+    justify-content: space-between;
+}
+
+
 #prioritySelect{
     width: 40%;
 }

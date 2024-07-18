@@ -27,7 +27,7 @@ const displayList=(list,listID)=>{
         const {title,priority}=todos.readToDo(todo);
         let id=todo;
         mainComponent.addTodoCard(title,priority,id,list); 
-        mainComponent.addActions('',listID);
+        mainComponent.addActions('todos',listID);
     })
 }
 
@@ -43,6 +43,8 @@ const displayListArray=(list,listID)=>{
         mainComponent.Cards.children[counter].addEventListener('click',(e)=>deleteToDo(e,todoID));
         mainComponent.Actions.addEventListener('click',(e)=>handleAction(e));
         if(listID!=="All Tasks") mainComponent.addActions('list',listID);
+        if(listID=="All Tasks") mainComponent.addActions('todos',listID);
+
         
     })};
 }
@@ -100,12 +102,9 @@ const handleListActions=(e)=>{
 const showListToDos=(e)=>{
     const listName=e.target.getAttribute('data-list');
     myToDoLists.importLists(JSON.parse(localStorage.getItem('todoLists')));
-    console.log('todo list @ showListToDos',myToDoLists.allToDoLists());
     const list=myToDoLists.readList(listName);
     mainComponent.setTitle(listName)
-    console.log('calling display array on :',list,listName)
     displayListArray(list,listName);
-    console.log('Called........');
     mainComponent.addActions('list',listName);
 }
 
