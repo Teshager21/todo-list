@@ -3,18 +3,30 @@ const todoCard=(title,status,id,list)=>{
     todoCard.classList.add('card');
 
     const Title=document.createElement('p');
-   
     Title.textContent=title;
-    todoCard.append(title);
+  
+    //delet btn
     const deleteBtn= document.createElement('button');
     deleteBtn.classList.add('btn');
     deleteBtn.textContent='Delete';
     deleteBtn.setAttribute('id',id);
     deleteBtn.setAttribute('data-list',list)
     deleteBtn.setAttribute('data-action','delete');
-    todoCard.append(deleteBtn);
+
+
+    //checkBox
+    const tick=document.createElement('input');
+    tick.setAttribute('type','checkbox');
+    tick.classList.add('tick');    
+
+    //left
+    const cardLeft=document.createElement('div');
+    cardLeft.classList.add('cardLeft')
+
     const Status =document.createElement('span');
     Status.textContent=status;
+    cardLeft.append(tick,title);
+    todoCard.append(cardLeft,deleteBtn);
     return todoCard;
 }
 

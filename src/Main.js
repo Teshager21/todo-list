@@ -9,7 +9,7 @@ const setTitle=(title)=>{
 }
 
 const Cards= document.createElement('div');
-Cards.classList.add('main');
+Cards.classList.add('cards');
 const addTodoCard=(title,priority,id,list)=>{
     let todo=todoCard(title,priority,id,list);
     Cards.append(todo);
@@ -34,10 +34,8 @@ const addActions=(type,listID)=>{
     if(type==='list'|| type==='project'){
         Actions.innerHTML='';
         Actions.append(importTodo);
-        console.log('call got here');
     }
     if(type==='lists'){
-        console.log('list touching actions.................')
         Actions.innerHTML='';
         const addListBtn=document.createElement('button');
         addListBtn.textContent="+Add ToDo List"

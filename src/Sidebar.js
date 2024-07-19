@@ -6,7 +6,6 @@ const addListBtn=document.createElement('button');
 addListBtn.textContent="+Add ToDo List"
 addListBtn.classList.add('btn');
 addListBtn.addEventListener('click',()=>{
-    console.log('clicked the project list')
     document.getElementById('listDialog').showModal();
 })
 
@@ -41,7 +40,6 @@ const todoValues=dialog.addEventListener('close',(e)=>{
     return JSON.parse(dialog.returnValue);
 })
 
-console.log(todoValues)
 sidebar.append(todayBtn,Tasks,showTodoLists,addTodoBtn,addListBtn);
 
 

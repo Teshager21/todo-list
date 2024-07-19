@@ -36,12 +36,15 @@ const displayListArray=(list,listID)=>{
     mainComponent.Cards.innerHTML="";
     if(list){
     list.map((todoID)=>{
-        const {title,priority}=todos.readToDo(todoID);
-        mainComponent.setTitle(listID); 
-        mainComponent.addTodoCard(title,priority,todoID,listID||'delete'); 
-        let counter=mainComponent.Cards.children.length-1;
-        mainComponent.Cards.children[counter].addEventListener('click',(e)=>deleteToDo(e,todoID));
-        mainComponent.Actions.addEventListener('click',(e)=>handleAction(e));
+        const {title,priority,status}=todos.readToDo(todoID);
+        if(status!=='done'){
+            mainComponent.setTitle(listID); 
+            mainComponent.addTodoCard(title,priority,todoID,listID||'delete'); 
+            let counter=mainComponent.Cards.children.length-1;
+            mainComponent.Cards.children[counter].addEventListener('click',(e)=>handleCardClicks(e,todoID))
+            mainComponent.Actions.addEventListener('click',(e)=>handleAction(e));
+        }
+       
         if(listID!=="All Tasks") mainComponent.addActions('list',listID);
         if(listID=="All Tasks") mainComponent.addActions('todos',listID);
         
@@ -58,15 +61,25 @@ if(e.target.getAttribute('data-action')==="import"){
      setOptions(todosArray); 
 }
 }
-
-const deleteToDo=(e,todoID)=>{
+const handleCardClicks=(e,todoID)=>{
     if(e.target.nodeName==='BUTTON' && e.target.getAttribute('data-action')==='delete'){
         todos.deleteToDo(todoID);
         myToDoLists.importLists(JSON.parse(localStorage.getItem('todoLists')));
         displayListArray(todos.getList());
     }
-  
+    else if(e.target.nodeName==="INPUT" && e.target.getAttribute('type')==='checkbox' ){
+        console.log(e.target.checked)
+        let status;
+        e.target.checked?status="done":status="open";
+        const newTodo={...todos.readToDo(todoID)};
+        const {id,title,description,dueDate,priority}=newTodo
+        todos.updateToDo(id,title,description,dueDate,priority,status);
+        console.log('the todo after update',todos.readToDo(todoID));
+    }
+    else{
+    }
 }
+
 
 const displayLists=()=>{
     mainComponent.Cards.innerHTML="";

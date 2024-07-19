@@ -35,6 +35,8 @@ readToDo:function(id){
 },
 
 updateToDo:function(id,new_title,new_description,new_dueDate,new_priority,new_status){
+    console.log('updating..',id,new_title,new_description,new_dueDate,new_priority,new_status)
+    console.log(new_description)
     this.cache[id]=ToDo(new_title,new_description,new_dueDate,new_priority,new_status).updateToDo(id);
     this.updateStorage();
     },
@@ -67,7 +69,7 @@ removeToDoFromList:function(todoid,todolist){
     description=description;
     dueDate =dueDate;
     priority=priority;
-    status=status;
+    status? status=status:status="open";
     let id=uuidv4();
     const getID=()=>{
         return id;
