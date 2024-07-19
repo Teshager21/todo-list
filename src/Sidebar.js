@@ -4,7 +4,7 @@ sidebar.classList.add('aside');
 
 const addListBtn=document.createElement('button');
 addListBtn.textContent="+Add ToDo List"
-addListBtn.classList.add('btn');
+addListBtn.classList.add('btn','btn-silent');
 addListBtn.addEventListener('click',()=>{
     document.getElementById('listDialog').showModal();
 })
@@ -12,7 +12,7 @@ addListBtn.addEventListener('click',()=>{
 //add to do btn 
 const addTodoBtn= document.createElement('button');
 addTodoBtn.textContent="+ Add Task";
-addTodoBtn.classList.add('btn')
+addTodoBtn.classList.add('btn','btn-silent')
 addTodoBtn.addEventListener('click',()=>{
     dialog.showModal();
 })
@@ -20,18 +20,18 @@ addTodoBtn.addEventListener('click',()=>{
 //today btn
 const todayBtn= document.createElement('button');
 todayBtn.textContent="Today";
-todayBtn.classList.add('btn')
+todayBtn.classList.add('btn','btn-silent')
 
 
 //todolists btn
 const showTodoLists= document.createElement('button');
 showTodoLists.textContent="Todo Lists";
-showTodoLists.classList.add('btn');
+showTodoLists.classList.add('btn','btn-silent');
 
 //Tasks btn
 const Tasks= document.createElement('button');
 Tasks.textContent="All Tasks";
-Tasks.classList.add('btn')
+Tasks.classList.add('btn','btn-silent')
 
 
 sidebar.appendChild(dialog);

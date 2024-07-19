@@ -3,9 +3,10 @@ import { projects} from './Projects';
 import { ToDoLists, ToDoList } from './ToDoList';
 import {sidebar,showTodoLists,Tasks,todayBtn}from './Sidebar';
 import main from './Main';
-import {dialog,listDialog,ImportDialog,setOptions} from './Dialog';
+import {dialog,listDialog,ImportDialog,setOptions,todoDetail} from './Dialog';
 import './style.css';
 import { list } from 'postcss';
+import { Button } from 'bootstrap';
 
 let myToDoLists= ToDoLists();
 //-------------THE VIEW------------------------------------------//
@@ -68,15 +69,13 @@ const handleCardClicks=(e,todoID)=>{
         displayListArray(todos.getList());
     }
     else if(e.target.nodeName==="INPUT" && e.target.getAttribute('type')==='checkbox' ){
-        console.log(e.target.checked)
         let status;
         e.target.checked?status="done":status="open";
-        const newTodo={...todos.readToDo(todoID)};
-        const {id,title,description,dueDate,priority}=newTodo
+        const {id,title,description,dueDate,priority}=todos.readToDo(todoID);
         todos.updateToDo(id,title,description,dueDate,priority,status);
-        console.log('the todo after update',todos.readToDo(todoID));
     }
     else{
+        displayTaskDetail(todoID)
     }
 }
 
@@ -101,7 +100,7 @@ const handleListActions=(e)=>{
            myToDoLists.deleteList(e.target.getAttribute('id'));
            displayLists();
     }else  showListToDos(e)
-   
+
 }
 
 const showListToDos=(e)=>{
@@ -126,11 +125,28 @@ showTodoLists.addEventListener('click',()=>{
     displayLists();
 })
 
+const displayTaskDetail=(todoID)=>{
+mainComponent.Cards.innerHTML=""; 
+mainComponent.setTitle(todos.readToDo(todoID).title);
+const innerContent=todoDetail();
+innerContent.populateContainer(todos.readToDo(todoID));
+mainComponent.Cards.append(innerContent.dialogContainer);
+mainComponent.Cards.addEventListener('click',(e)=>detailClicks(e,todoID,innerContent))
+}
+
+const detailClicks=(e,todoID,container)=>{
+ if(e.target.nodeName==='BUTTON' && e.target.getAttribute('data-action')==='update'){
+    const {title,description,dueDate,priority,status}=container.readContainer();
+    todos.updateToDo(todoID,title,description,dueDate,priority,status);
+    displayListArray(todos.getList(),'All Tasks')
+ }
+}
+
 dialog.addEventListener('close',(e)=>{
     if(dialog.returnValue==='null') return;
     const returnValues=JSON.parse(dialog.returnValue);
-    const {title,duedate,priority}=returnValues
-    const todoID=todos.createToDo(title,'',duedate,priority,);
+    const {title,description,duedate,priority,status}=returnValues
+    const todoID=todos.createToDo(title,description,duedate,priority,status);
     displayLists();
 })
 

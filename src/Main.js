@@ -62,6 +62,10 @@ actionBar.append(Title,Actions);
 actionBar.classList.add('actionBar')
 Main.append(actionBar,Cards);
 
+const todoDetail=(todoID)=>{
+
+}
+
 
 return {Main,Cards,Actions,addTodoCard,addListCard,addActions,setTitle};
 }

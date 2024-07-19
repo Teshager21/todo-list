@@ -71,6 +71,29 @@
     color: tomato;
 }
 
+.btn-silent{
+    background-color: transparent;
+}
+
+input{
+    height: 2rem;
+    padding-left: 1rem;
+    border: 1px solid rgb(0,0,0,0.1);
+    font-size: 1.2rem;
+}
+
+label{
+    font-size: 1rem;
+    color: rgb(0,0,0,0.7);
+}
+
+select{
+    height: 2rem;
+    padding-left: 1rem;
+    border: 1px solid rgb(0,0,0,0.1);
+    font-size: 1.2rem;
+}
+
 dialog{
     width: 80vh;
     height: 45vh;

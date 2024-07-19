@@ -63,7 +63,6 @@ const createList=(name)=>{
     const newList=todoLists[listID];
     newList.push(todoID);
     updateList(listID,newList);
-    // localStorage.setItem('todoLists',JSON.stringify(todoLists)); 
  }
 
  const updateList=(listID,newToDoList)=>{
