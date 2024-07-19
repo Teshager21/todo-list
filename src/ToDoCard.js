@@ -1,6 +1,6 @@
 const todoCard=(title,status,id,list)=>{
     const todoCard = document.createElement('div');
-    todoCard.classList.add('card');
+    todoCard.classList.add('todo-card');
 
     const Title=document.createElement('p');
     Title.textContent=title;

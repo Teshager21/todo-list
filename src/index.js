@@ -1,7 +1,7 @@
 import { todos} from './ToDos';
 import { projects} from './Projects';
 import { ToDoLists, ToDoList } from './ToDoList';
-import {sidebar,showTodoLists,Tasks,todayBtn}from './Sidebar';
+import {sidebar,showTodoLists,Tasks,todayBtn,closedTasks}from './Sidebar';
 import main from './Main';
 import {dialog,listDialog,ImportDialog,setOptions,todoDetail} from './Dialog';
 import './style.css';
@@ -32,7 +32,13 @@ const displayList=(list,listID)=>{
         mainComponent.setTitle(listID);
     })
 }
+const displayToDo=(todoID)=>{
+    const {title,priority,status}=todos.readToDo(todoID);
+    mainComponent.addTodoCard(title,priority,todoID,'delete'); 
+    let counter=mainComponent.Cards.children.length-1;
+    mainComponent.Cards.children[counter].addEventListener('click',(e)=>handleCardClicks(e,todoID));
 
+}
 const displayListArray=(list,listID)=>{
     mainComponent.Cards.innerHTML="";
     if(list){
@@ -166,13 +172,30 @@ Tasks.addEventListener('click',()=>{
     displayListArray(todos.getList(),"All Tasks");
 });
 
-const today =ToDoList('today');
-todos.getList().map((taskID)=>{
-    if(todos.readToDo(taskID).dueDate===new Date().toISOString().slice(0, 10)) today.addToList(todos.readToDo(taskID));
+closedTasks.addEventListener('click',()=>{
+    mainComponent.Cards.innerHTML='';
+    mainComponent.setTitle('Completed Tasks');
+    for(let id of todos.getList()){
+        if(todos.readToDo(id).status==='done'){
+            displayToDo(id);
+        }
+    }
 })
 
-displayList(today,"Today");
-todayBtn.addEventListener('click',()=>displayList(today,"Today"));
+const today =ToDoList('today');
+todos.getList().map((taskID)=>{
+    if(todos.readToDo(taskID).dueDate===new Date().toISOString().slice(0, 10))
+         {today.addToList(todos.readToDo(taskID));}
+})
+const displayToday=()=>{
+    mainComponent.Cards.innerHTML="";
+    mainComponent.setTitle("Today")
+    for(let taskID of todos.getList()){
+        if(todos.readToDo(taskID).dueDate===new Date().toISOString().slice(0, 10)) displayToDo(taskID);
+    }
+}
+displayToday(); //default view when the app starts
+todayBtn.addEventListener('click',displayToday);
 
 content.append(sidebar,mainComponent.Main);
 

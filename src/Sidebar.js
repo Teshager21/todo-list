@@ -33,14 +33,17 @@ const Tasks= document.createElement('button');
 Tasks.textContent="All Tasks";
 Tasks.classList.add('btn','btn-silent')
 
+//closed Tasks btn
+const closedTasks= document.createElement('button');
+closedTasks.textContent="Closed Tasks";
+closedTasks.classList.add('btn','btn-silent')
 
-sidebar.appendChild(dialog);
 
 const todoValues=dialog.addEventListener('close',(e)=>{
     return JSON.parse(dialog.returnValue);
 })
 
-sidebar.append(todayBtn,Tasks,showTodoLists,addTodoBtn,addListBtn);
+sidebar.append(todayBtn,Tasks,showTodoLists,closedTasks,addTodoBtn,addListBtn,dialog);
 
 
-export {sidebar,showTodoLists,Tasks,todayBtn};
+export {sidebar,showTodoLists,Tasks,todayBtn,closedTasks};
