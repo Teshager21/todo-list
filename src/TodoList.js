@@ -17,12 +17,10 @@ let id=name;
  }
   const addToList=(todoID)=>{
   todoList.push(todoID);
-  localStorage.setItem('todoLists',JSON.stringify(todoLists));
+//   localStorage.setItem('todoLists',JSON.stringify(todoLists));
  };
   const removeFromList=(todoID)=>{
-    // console.log('before delete',todoList)
    todoList.splice(todoList.indexOf(todoID),1);
-//    console.log('after delelte',todoList)
  };
 
  return {getID,getList,addToList,removeFromList}
@@ -31,12 +29,9 @@ let id=name;
 
 const ToDoLists=()=>{
     let todoLists;
-    console.log('we are in todolists');
     if(localStorage.getItem('todoLists')===null){
-      console.log('there is noooo list in local storage');
         localStorage.setItem('todoLists',JSON.stringify({}));
     }else{
-      console.log('there is a list in local storage');
        todoLists=JSON.parse(localStorage.getItem('todoLists'));
     }
    const importLists=(lists)=>{

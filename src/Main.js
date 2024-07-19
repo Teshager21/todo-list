@@ -28,7 +28,6 @@ importTodo.setAttribute('data-action','import')
 importTodo.classList.add('btn')
 
 
-// actions.append(importTodo);
 const addActions=(type,listID)=>{
     importTodo.setAttribute('id',listID);
     ImportDialog.setAttribute('data-list',listID)
@@ -65,7 +64,6 @@ actionBar.append(Title,Actions);
 actionBar.classList.add('actionBar')
 Main.append(actionBar,Cards);
 
-// let todo2=todoCard('This must be the Second Task',"OverDue")
 
 return {Main,Cards,Actions,addTodoCard,addListCard,addActions,setTitle};
 }

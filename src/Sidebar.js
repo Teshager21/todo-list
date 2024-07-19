@@ -18,6 +18,12 @@ addTodoBtn.addEventListener('click',()=>{
     dialog.showModal();
 })
 
+//today btn
+const todayBtn= document.createElement('button');
+todayBtn.textContent="Today";
+todayBtn.classList.add('btn')
+
+
 //todolists btn
 const showTodoLists= document.createElement('button');
 showTodoLists.textContent="Todo Lists";
@@ -36,15 +42,7 @@ const todoValues=dialog.addEventListener('close',(e)=>{
 })
 
 console.log(todoValues)
-sidebar.append(addTodoBtn,addListBtn,showTodoLists,Tasks);
+sidebar.append(todayBtn,Tasks,showTodoLists,addTodoBtn,addListBtn);
 
 
-
-
-
-
-
-
-
-
-export {sidebar,showTodoLists,Tasks};
+export {sidebar,showTodoLists,Tasks,todayBtn};
