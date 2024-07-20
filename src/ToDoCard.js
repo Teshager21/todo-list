@@ -1,4 +1,4 @@
-const todoCard=(title,status,id,list)=>{
+const todoCard=(title,priority,id,list,status)=>{
     const todoCard = document.createElement('div');
     todoCard.classList.add('todo-card');
 
@@ -17,8 +17,8 @@ const todoCard=(title,status,id,list)=>{
     //checkBox
     const tick=document.createElement('input');
     tick.setAttribute('type','checkbox');
-    tick.classList.add('tick');    
-
+    tick.classList.add('tick'); 
+    if(status==='done') tick.checked=true;
     //left
     const cardLeft=document.createElement('div');
     cardLeft.classList.add('cardLeft')

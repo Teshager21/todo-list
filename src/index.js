@@ -32,24 +32,23 @@ const displayList=(list,listID)=>{
         mainComponent.setTitle(listID);
     })
 }
-const displayToDo=(todoID)=>{
+const displayToDo=(todoID,context)=>{
     const {title,priority,status}=todos.readToDo(todoID);
-    mainComponent.addTodoCard(title,priority,todoID,'delete'); 
+    mainComponent.addTodoCard(title,priority,todoID,'delete',status); 
     let counter=mainComponent.Cards.children.length-1;
-    mainComponent.Cards.children[counter].addEventListener('click',(e)=>handleCardClicks(e,todoID));
-
+    mainComponent.Cards.children[counter].addEventListener('click',(e)=>handleCardClicks(e,todoID,context));
+    // console.log(Object.keys(context).includes('today'))
+    
 }
 const displayListArray=(list,listID)=>{
     mainComponent.Cards.innerHTML="";
+    mainComponent.setTitle(listID); 
     if(list){
     list.map((todoID)=>{
-        const {title,priority,status}=todos.readToDo(todoID);
+        const {status}=todos.readToDo(todoID);
         if(status!=='done'){
-            mainComponent.setTitle(listID); 
-            mainComponent.addTodoCard(title,priority,todoID,listID||'delete'); 
-            let counter=mainComponent.Cards.children.length-1;
-            mainComponent.Cards.children[counter].addEventListener('click',(e)=>handleCardClicks(e,todoID))
-            mainComponent.Actions.addEventListener('click',(e)=>handleAction(e));
+            displayToDo(todoID,{list:listID});
+             mainComponent.Actions.addEventListener('click',(e)=>handleAction(e));
         }
        
         if(listID!=="All Tasks") mainComponent.addActions('list',listID);
@@ -68,7 +67,7 @@ if(e.target.getAttribute('data-action')==="import"){
      setOptions(todosArray); 
 }
 }
-const handleCardClicks=(e,todoID)=>{
+const handleCardClicks=(e,todoID,context)=>{
     if(e.target.nodeName==='BUTTON' && e.target.getAttribute('data-action')==='delete'){
         todos.deleteToDo(todoID);
         myToDoLists.importLists(JSON.parse(localStorage.getItem('todoLists')));
@@ -79,6 +78,12 @@ const handleCardClicks=(e,todoID)=>{
         e.target.checked?status="done":status="open";
         const {id,title,description,dueDate,priority}=todos.readToDo(todoID);
         todos.updateToDo(id,title,description,dueDate,priority,status);
+        const contextKeys=Object.keys(context);
+        if(contextKeys.includes('today')) displayToday();
+        if(contextKeys.includes('list')) displayListArray(myToDoLists.readList(context.list),context.list);
+        if(contextKeys.includes('closedTasks')) displayClosedTasks();
+        if(contextKeys.includes('allTasks')) displayAllTasks();
+
     }
     else{
         displayTaskDetail(todoID)
@@ -153,7 +158,7 @@ dialog.addEventListener('close',(e)=>{
     const returnValues=JSON.parse(dialog.returnValue);
     const {title,description,duedate,priority,status}=returnValues
     const todoID=todos.createToDo(title,description,duedate,priority,status);
-    displayLists();
+    displayListArray(todos.getList(),"All Tasks");
 })
 
 listDialog.addEventListener('close',()=>{
@@ -169,18 +174,33 @@ ImportDialog.addEventListener('close',()=>{
 });
 
 Tasks.addEventListener('click',()=>{
-    displayListArray(todos.getList(),"All Tasks");
+    displayAllTasks();
 });
 
-closedTasks.addEventListener('click',()=>{
+const displayAllTasks=()=>{
+    mainComponent.Cards.innerHTML='';
+    mainComponent.setTitle('All Tasks');
+    for(let id of todos.getList()){
+        if(todos.readToDo(id).status!=='done'){
+            displayToDo(id,{allTasks:todos.getList()});
+        }
+    }
+    mainComponent.addActions('todos',"All Tasks");
+}
+
+const displayClosedTasks=()=>{
     mainComponent.Cards.innerHTML='';
     mainComponent.setTitle('Completed Tasks');
     for(let id of todos.getList()){
         if(todos.readToDo(id).status==='done'){
-            displayToDo(id);
+            displayToDo(id,{closedTasks});
         }
-    }
-})
+    } 
+    mainComponent.addActions('noActions',"Closed Tasks"); 
+}
+
+closedTasks.addEventListener('click',displayClosedTasks)
+
 
 const today =ToDoList('today');
 todos.getList().map((taskID)=>{
@@ -191,8 +211,9 @@ const displayToday=()=>{
     mainComponent.Cards.innerHTML="";
     mainComponent.setTitle("Today")
     for(let taskID of todos.getList()){
-        if(todos.readToDo(taskID).dueDate===new Date().toISOString().slice(0, 10)) displayToDo(taskID);
+        if(todos.readToDo(taskID).dueDate===new Date().toISOString().slice(0, 10)) displayToDo(taskID,{today});
     }
+    mainComponent.addActions('todos',"Today");
 }
 displayToday(); //default view when the app starts
 todayBtn.addEventListener('click',displayToday);

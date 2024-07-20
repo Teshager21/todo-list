@@ -10,8 +10,8 @@ const setTitle=(title)=>{
 
 const Cards= document.createElement('div');
 Cards.classList.add('cards');
-const addTodoCard=(title,priority,id,list)=>{
-    let todo=todoCard(title,priority,id,list);
+const addTodoCard=(title,priority,id,list,status)=>{
+    let todo=todoCard(title,priority,id,list,status);
     Cards.append(todo);
 }
 
@@ -41,19 +41,21 @@ const addActions=(type,listID)=>{
         addListBtn.textContent="+Add ToDo List"
         addListBtn.classList.add('btn');
         addListBtn.addEventListener('click',()=>{
-        document.getElementById('listDialog').showModal();
-        });
+        document.getElementById('listDialog').showModal(); });
         Actions.append(addListBtn);
     }
     if(type==='todos'){
         Actions.innerHTML='';
         //add to do btn 
-const addTodoBtn= document.createElement('button');
-addTodoBtn.textContent="+ Add Task";
-addTodoBtn.classList.add('btn')
-addTodoBtn.addEventListener('click',()=>{
-    dialog.showModal();
-})
+        const addTodoBtn= document.createElement('button');
+        addTodoBtn.textContent="+ Add Task";
+        addTodoBtn.classList.add('btn')
+        addTodoBtn.addEventListener('click',()=>{
+            dialog.showModal();
+        })
+if(type==='noAction'){
+    Actions.innerHTML='';
+}
 Actions.append(addTodoBtn);
     }
 
@@ -61,11 +63,6 @@ Actions.append(addTodoBtn);
 actionBar.append(Title,Actions);
 actionBar.classList.add('actionBar')
 Main.append(actionBar,Cards);
-
-const todoDetail=(todoID)=>{
-
-}
-
 
 return {Main,Cards,Actions,addTodoCard,addListCard,addActions,setTitle};
 }
