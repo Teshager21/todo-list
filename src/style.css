@@ -82,6 +82,13 @@ input{
     font-size: 1.2rem;
 }
 
+.sub-title{
+    padding-top: 6rem;
+    padding-bottom: 1rem;
+    margin-left: -1rem; 
+    color:#008b45;
+}
+
 .todo-card{
     border-bottom: 1px solid rgb(0,0,150,0.3);
     padding-top: 0.25rem;

@@ -45,16 +45,18 @@ const displayListArray=(list,listID)=>{
     mainComponent.setTitle(listID); 
     if(list){
     list.map((todoID)=>{
-        const {status}=todos.readToDo(todoID);
-        if(status!=='done'){
-            displayToDo(todoID,{list:listID});
-             mainComponent.Actions.addEventListener('click',(e)=>handleAction(e));
-        }
-       
-        if(listID!=="All Tasks") mainComponent.addActions('list',listID);
-        if(listID=="All Tasks") mainComponent.addActions('todos',listID);
-        
-    })};
+        const {status}=todos.readToDo(todoID);     
+        if(status!=='done')displayToDo(todoID,{list:listID}); 
+    })
+    mainComponent.insertSubtitle('Completed Tasks');
+    list.map((todoID)=>{
+        const {status}=todos.readToDo(todoID);     
+        if(status==='done') displayToDo(todoID,{list:listID});  
+    })
+    mainComponent.Actions.addEventListener('click',(e)=>handleAction(e));
+    if(listID!=="All Tasks") mainComponent.addActions('list',listID);
+    if(listID==="All Tasks") mainComponent.addActions('todos',listID);
+};
 }
 
 const handleAction=(e)=>{
@@ -67,6 +69,8 @@ if(e.target.getAttribute('data-action')==="import"){
      setOptions(todosArray); 
 }
 }
+
+
 const handleCardClicks=(e,todoID,context)=>{
     if(e.target.nodeName==='BUTTON' && e.target.getAttribute('data-action')==='delete'){
         todos.deleteToDo(todoID);
@@ -204,14 +208,19 @@ closedTasks.addEventListener('click',displayClosedTasks)
 
 const today =ToDoList('today');
 todos.getList().map((taskID)=>{
-    if(todos.readToDo(taskID).dueDate===new Date().toISOString().slice(0, 10))
-         {today.addToList(todos.readToDo(taskID));}
+    if(todos.readToDo(taskID).dueDate===new Date().toISOString().slice(0, 10)) {
+       today.addToList(todos.readToDo(taskID));
+    }
 })
 const displayToday=()=>{
     mainComponent.Cards.innerHTML="";
     mainComponent.setTitle("Today")
     for(let taskID of todos.getList()){
-        if(todos.readToDo(taskID).dueDate===new Date().toISOString().slice(0, 10)) displayToDo(taskID,{today});
+        if(todos.readToDo(taskID).dueDate===new Date().toISOString().slice(0, 10)&& (todos.readToDo(taskID).status!=='done')) displayToDo(taskID,{today});
+    }
+    mainComponent.insertSubtitle("Completed Tasks")
+    for(let taskID of todos.getList()){
+        if(todos.readToDo(taskID).dueDate===new Date().toISOString().slice(0, 10)&& (todos.readToDo(taskID).status==='done')) displayToDo(taskID,{today});
     }
     mainComponent.addActions('todos',"Today");
 }

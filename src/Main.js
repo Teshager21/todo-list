@@ -29,42 +29,49 @@ importTodo.classList.add('btn')
 
 
 const addActions=(type,listID)=>{
+    //add list btn
+    const addListBtn=document.createElement('button');
+    addListBtn.textContent="+Add ToDo List"
+    addListBtn.classList.add('btn');
+    addListBtn.addEventListener('click',()=>document.getElementById('listDialog').showModal());
+
+    //add to do btn 
+    const addTodoBtn= document.createElement('button');
+    addTodoBtn.textContent="+ Add Task";
+    addTodoBtn.classList.add('btn')
+    addTodoBtn.addEventListener('click',()=>{
+        dialog.showModal();
+    });
+
     importTodo.setAttribute('id',listID);
-    ImportDialog.setAttribute('data-list',listID)
+    ImportDialog.setAttribute('data-list',listID);
+    Actions.innerHTML='';
     if(type==='list'|| type==='project'){
-        Actions.innerHTML='';
         Actions.append(importTodo);
     }
     if(type==='lists'){
-        Actions.innerHTML='';
-        const addListBtn=document.createElement('button');
-        addListBtn.textContent="+Add ToDo List"
-        addListBtn.classList.add('btn');
-        addListBtn.addEventListener('click',()=>{
-        document.getElementById('listDialog').showModal(); });
         Actions.append(addListBtn);
     }
     if(type==='todos'){
-        Actions.innerHTML='';
-        //add to do btn 
-        const addTodoBtn= document.createElement('button');
-        addTodoBtn.textContent="+ Add Task";
-        addTodoBtn.classList.add('btn')
-        addTodoBtn.addEventListener('click',()=>{
-            dialog.showModal();
-        })
-if(type==='noAction'){
-    Actions.innerHTML='';
-}
-Actions.append(addTodoBtn);
+        Actions.append(addTodoBtn);
     }
-
-}
+    if(type==='noAction'){
+        // Actions.innerHTML='';
+    }
+// Actions.append(addTodoBtn);
+    }
 actionBar.append(Title,Actions);
-actionBar.classList.add('actionBar')
+actionBar.classList.add('actionBar');
 Main.append(actionBar,Cards);
 
-return {Main,Cards,Actions,addTodoCard,addListCard,addActions,setTitle};
+const insertSubtitle=(text)=>{
+   const subTitle= document.createElement('h4');
+   subTitle.textContent=text;
+   subTitle.classList.add('sub-title');
+   Cards.append(subTitle);
+}
+
+return {Main,Cards,Actions,addTodoCard,addListCard,addActions,setTitle,insertSubtitle};
 }
 
 export default main;
