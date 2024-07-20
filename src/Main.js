@@ -60,16 +60,16 @@ const addActions=(type,listID)=>{
     }
 // Actions.append(addTodoBtn);
     }
-actionBar.append(Title,Actions);
-actionBar.classList.add('actionBar');
-Main.append(actionBar,Cards);
+    actionBar.append(Title,Actions);
+    actionBar.classList.add('actionBar');
+    Main.append(actionBar,Cards);
 
-const insertSubtitle=(text)=>{
-   const subTitle= document.createElement('h4');
-   subTitle.textContent=text;
-   subTitle.classList.add('sub-title');
-   Cards.append(subTitle);
-}
+    const insertSubtitle=(text)=>{
+    const subTitle= document.createElement('h4');
+    subTitle.textContent=text;
+    subTitle.classList.add('sub-title');
+    Cards.append(subTitle);
+    }
 
 return {Main,Cards,Actions,addTodoCard,addListCard,addActions,setTitle,insertSubtitle};
 }

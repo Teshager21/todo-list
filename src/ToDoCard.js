@@ -1,3 +1,4 @@
+// import deleteIcon from './resources/icons8-delete-50.png'
 const todoCard=(title,priority,id,list,status)=>{
     const todoCard = document.createElement('div');
     todoCard.classList.add('todo-card');
@@ -12,6 +13,10 @@ const todoCard=(title,priority,id,list,status)=>{
     deleteBtn.setAttribute('id',id);
     deleteBtn.setAttribute('data-list',list)
     deleteBtn.setAttribute('data-action','delete');
+    // const deleteImage =new Image();
+    // deleteImage.src= deleteIcon;
+    // deleteImage.classList.add('delete-icon')
+    // deleteBtn.append(deleteImage);
 
 
     //checkBox
