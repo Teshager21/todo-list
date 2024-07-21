@@ -185,7 +185,7 @@ const displayAllTasks=()=>{
     mainComponent.Cards.innerHTML='';
     mainComponent.setTitle('All Tasks');
     for(let id of todos.getList()){
-        if(todos.readToDo(id).status!=='done'){
+        if(!isTaskCompleted(id)){
             displayToDo(id,{allTasks:todos.getList()});
         }
     }
@@ -196,7 +196,7 @@ const displayClosedTasks=()=>{
     mainComponent.Cards.innerHTML='';
     mainComponent.setTitle('Completed Tasks');
     for(let id of todos.getList()){
-        if(todos.readToDo(id).status==='done'){
+        if(isTaskCompleted(id)){
             displayToDo(id,{closedTasks});
         }
     } 
@@ -205,10 +205,16 @@ const displayClosedTasks=()=>{
 
 closedTasks.addEventListener('click',displayClosedTasks)
 
+const isTaskDueToday=(taskID)=>{
+    return (todos.readToDo(taskID).dueDate===new Date().toISOString().slice(0, 10));
+};
+const isTaskCompleted=(taskID)=>{
+     return (todos.readToDo(taskID).status==='done');
+};
 
 const today =ToDoList('today');
 todos.getList().map((taskID)=>{
-    if(todos.readToDo(taskID).dueDate===new Date().toISOString().slice(0, 10)) {
+    if(isTaskDueToday(taskID)) {
        today.addToList(todos.readToDo(taskID));
     }
 })
@@ -216,11 +222,11 @@ const displayToday=()=>{
     mainComponent.Cards.innerHTML="";
     mainComponent.setTitle("Today")
     for(let taskID of todos.getList()){
-        if(todos.readToDo(taskID).dueDate===new Date().toISOString().slice(0, 10)&& (todos.readToDo(taskID).status!=='done')) displayToDo(taskID,{today});
+        if(isTaskDueToday(taskID) && (!isTaskCompleted(taskID))) displayToDo(taskID,{today});
     }
     mainComponent.insertSubtitle("Completed Tasks")
     for(let taskID of todos.getList()){
-        if(todos.readToDo(taskID).dueDate===new Date().toISOString().slice(0, 10)&& (todos.readToDo(taskID).status==='done')) displayToDo(taskID,{today});
+        if(isTaskDueToday(taskID)&& isTaskCompleted(taskID)) displayToDo(taskID,{today});
     }
     mainComponent.addActions('todos',"Today");
 }

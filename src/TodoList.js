@@ -1,6 +1,4 @@
 "use strict"
-import { todos } from "./ToDos";
-const { v4: uuidv4 } = require('uuid');
 
 const ToDoList=(name)=>{
     
