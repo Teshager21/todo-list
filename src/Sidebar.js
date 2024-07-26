@@ -1,49 +1,25 @@
-import {dialog} from "./Dialog";
-const sidebar=document.createElement('aside');
-sidebar.classList.add('aside');
 
-const addListBtn=document.createElement('button');
-addListBtn.textContent="+Add ToDo List"
-addListBtn.classList.add('btn','btn-silent');
-addListBtn.addEventListener('click',()=>{
-    document.getElementById('listDialog').showModal();
-})
+import {dialog}from "./Dialog";
+import { Button } from "./Utilities";
+import main from './Main'
+// const Sidebar=()=>{
+    const {addTodoBtn,addListBtn}=main();
+   
+    const sidebar=document.createElement('aside');
+    sidebar.classList.add('aside');
+    const showTodayBtn= new Button("Today",null,'btn btn-silent')
+    const showTodoListsBtn=Button("Todo Lists",null,'btn btn-silent');
+    //Tasks btn
+    const showAllTasksBtn=Button('All Tasks',null,'btn btn-silent');
+    //closed Tasks btn
+    const showClosedTasksBtn=Button('Closed Tasks',null,'btn btn-silent');
+    addTodoBtn.addEventListener('click',()=>dialog.showModal());
+    sidebar.append(showTodayBtn,showAllTasksBtn,showTodoListsBtn,showClosedTasksBtn,addTodoBtn,addListBtn,dialog);
 
-//add to do btn 
-const addTodoBtn= document.createElement('button');
-addTodoBtn.textContent="+ Add Task";
-addTodoBtn.classList.add('btn','btn-silent')
-addTodoBtn.addEventListener('click',()=>{
-    dialog.showModal();
-})
+//     return {sidebar,showTodoListsBtn,showAllTasksBtn,showTodayBtn,showClosedTasksBtn,addTodoBtn,addListBtn,dialog};
+    
+// }
+ const Sidebar={sidebar,showTodoListsBtn,showAllTasksBtn,showTodayBtn,showClosedTasksBtn,addTodoBtn,addListBtn,dialog};
 
-//today btn
-const todayBtn= document.createElement('button');
-todayBtn.textContent="Today";
-todayBtn.classList.add('btn','btn-silent')
-
-
-//todolists btn
-const showTodoLists= document.createElement('button');
-showTodoLists.textContent="Todo Lists";
-showTodoLists.classList.add('btn','btn-silent');
-
-//Tasks btn
-const Tasks= document.createElement('button');
-Tasks.textContent="All Tasks";
-Tasks.classList.add('btn','btn-silent')
-
-//closed Tasks btn
-const closedTasks= document.createElement('button');
-closedTasks.textContent="Closed Tasks";
-closedTasks.classList.add('btn','btn-silent')
-
-
-const todoValues=dialog.addEventListener('close',(e)=>{
-    return JSON.parse(dialog.returnValue);
-})
-
-sidebar.append(todayBtn,Tasks,showTodoLists,closedTasks,addTodoBtn,addListBtn,dialog);
-
-
-export {sidebar,showTodoLists,Tasks,todayBtn,closedTasks};
+export default Sidebar;
+// export {sidebar,showTodoLists,Tasks,todayBtn,closedTasks,addTodoBtn};

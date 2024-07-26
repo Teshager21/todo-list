@@ -39,6 +39,7 @@ const ToDoLists=()=>{
 const allToDoLists=()=>{return todoLists;}
 const createList=(name)=>{
     let newToDoList=ToDoList(name);
+    console.log(newToDoList.getList());
     todoLists[newToDoList.getID()]=newToDoList.getList();
     localStorage.setItem('todoLists',JSON.stringify(todoLists));
     return newToDoList;

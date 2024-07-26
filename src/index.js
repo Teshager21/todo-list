@@ -1,61 +1,59 @@
 import { todos} from './ToDos';
 import { projects} from './Projects';
 import { ToDoLists, ToDoList } from './ToDoList';
-import {sidebar,showTodoLists,Tasks,todayBtn,closedTasks}from './Sidebar';
+import Sidebar from './Sidebar'
 import main from './Main';
 import {dialog,listDialog,ImportDialog,setOptions,todoDetail} from './Dialog';
 import './style.css';
-import { list } from 'postcss';
-import { Button } from 'bootstrap';
+import menuPic from './resources/menu.png'
+import Menu from './Menu';
 
-let myToDoLists= ToDoLists();
+
+let {allToDoLists,createList,readList,deleteList,updateList,addToList,removeToDoFromList,addToDoToList,importLists}= ToDoLists();
 //-------------THE VIEW------------------------------------------//
+const {sidebar,showTodoListsBtn,showAllTasksBtn,showTodayBtn,showClosedTasksBtn,addTodoBtn}=Sidebar;
+const {Main,Cards,Actions,addTodoCard,addListCard,addActions,setTitle,insertSubtitle}=main();
+const {menu,addListBtn}=Menu();
 
+console.log(document.forms);
 const content= document.createElement('div');
 content.classList.add('content');
 content.setAttribute('id','content');
 document.body.append(content);
-const mainComponent=main();
 
-//-------put todo into todocards-----//
+const nav = document.querySelector('nav');
+const menuIcon= document.createElement('img');
+menuIcon.src=menuPic;
+menuIcon.classList.add('hamburger');
+nav.append(menuIcon);
+document.body.append(menu);
+menu.style.display='none';
+menuIcon.addEventListener('click',()=>toggleMenu());
 
-const displayList=(list,listID)=>{
-    mainComponent.Cards.innerHTML="";
-    let todolist=list.getList();
-    let todoArray= Object.values(todolist)
-    if(todoArray.length===0)return;
-    todoArray.map((todo)=>{
-        const {title,priority}=todo;
-        let id=todo;
-        mainComponent.addTodoCard(title,priority,id,list); 
-        mainComponent.addActions('todos',listID);
-        mainComponent.setTitle(listID);
-    })
-}
+const toggleMenu=()=>menu.style.display==='block'?menu.style.display='none':menu.style.display='block';
+
 const displayToDo=(todoID,context)=>{
-    const {title,priority,status}=todos.readToDo(todoID);
-    mainComponent.addTodoCard(title,priority,todoID,'delete',status); 
-    let counter=mainComponent.Cards.children.length-1;
-    mainComponent.Cards.children[counter].addEventListener('click',(e)=>handleCardClicks(e,todoID,context));
-    // console.log(Object.keys(context).includes('today'))
-    
+    const {title,dueDate,priority,status}=todos.readToDo(todoID);
+    addTodoCard(title,dueDate,priority,todoID,Object.keys(context)[0],status); 
+    let counter=Cards.children.length-1;
+    Cards.children[counter].addEventListener('click',(e)=>handleCardClicks(e,todoID,context));    
 }
-const displayListArray=(list,listID)=>{
-    mainComponent.Cards.innerHTML="";
-    mainComponent.setTitle(listID); 
+const displayListTasks=(list,listID)=>{
+    Cards.innerHTML="";
+    setTitle(listID); 
     if(list){
     list.map((todoID)=>{
         const {status}=todos.readToDo(todoID);     
         if(status!=='done')displayToDo(todoID,{list:listID}); 
     })
-    mainComponent.insertSubtitle('Completed Tasks');
+    insertSubtitle('Completed Tasks');
     list.map((todoID)=>{
         const {status}=todos.readToDo(todoID);     
         if(status==='done') displayToDo(todoID,{list:listID});  
     })
-    mainComponent.Actions.addEventListener('click',(e)=>handleAction(e));
-    if(listID!=="All Tasks") mainComponent.addActions('list',listID);
-    if(listID==="All Tasks") mainComponent.addActions('todos',listID);
+    Actions.addEventListener('click',(e)=>handleAction(e));
+    if(listID!=="All Tasks") addActions('list',listID);
+    if(listID==="All Tasks") addActions('todos',listID);
 };
 }
 
@@ -67,15 +65,17 @@ if(e.target.getAttribute('data-action')==="import"){
     })
      ImportDialog.showModal();
      setOptions(todosArray); 
-}
+}   
 }
 
 
 const handleCardClicks=(e,todoID,context)=>{
     if(e.target.nodeName==='BUTTON' && e.target.getAttribute('data-action')==='delete'){
-        todos.deleteToDo(todoID);
-        myToDoLists.importLists(JSON.parse(localStorage.getItem('todoLists')));
-        displayListArray(todos.getList());
+        if(Object.keys(context).includes('list')){
+            removeToDoFromList(todoID,context.list);
+        } else todos.deleteToDo(todoID);
+        importLists(JSON.parse(localStorage.getItem('todoLists')));
+        displayListTasks(ToDoLists().readList(context.list),context.list);
     }
     else if(e.target.nodeName==="INPUT" && e.target.getAttribute('type')==='checkbox' ){
         let status;
@@ -84,7 +84,7 @@ const handleCardClicks=(e,todoID,context)=>{
         todos.updateToDo(id,title,description,dueDate,priority,status);
         const contextKeys=Object.keys(context);
         if(contextKeys.includes('today')) displayToday();
-        if(contextKeys.includes('list')) displayListArray(myToDoLists.readList(context.list),context.list);
+        if(contextKeys.includes('list')) displayListTasks(readList(context.list),context.list);
         if(contextKeys.includes('closedTasks')) displayClosedTasks();
         if(contextKeys.includes('allTasks')) displayAllTasks();
 
@@ -96,23 +96,23 @@ const handleCardClicks=(e,todoID,context)=>{
 
 
 const displayLists=()=>{
-    mainComponent.Cards.innerHTML="";
-    if(myToDoLists.allToDoLists()===null||myToDoLists.allToDoLists()===undefined) return;
-    let listArray=Object.keys(myToDoLists.allToDoLists());
+    Cards.innerHTML="";
+    if(allToDoLists()===null||allToDoLists()===undefined) return;
+    let listArray=Object.keys(allToDoLists());
     
     listArray.map((list)=>{
         if(list.length===0)return;
-        mainComponent.setTitle("Lists")
-        mainComponent.addListCard(list,list);
-        let counter=mainComponent.Cards.children.length-1;
-        mainComponent.Cards.children[counter].addEventListener('click',handleListActions)
-        mainComponent.addActions('lists','todos');
+        setTitle("Lists")
+        addListCard(list,list);
+        let counter=Cards.children.length-1;
+        Cards.children[counter].addEventListener('click',handleListActions)
+        addActions('lists','todos');
     })
 }
 
 const handleListActions=(e)=>{
     if(e.target.nodeName==="BUTTON" && e.target.getAttribute('data-action')==='delete'){
-           myToDoLists.deleteList(e.target.getAttribute('id'));
+           deleteList(e.target.getAttribute('id'));
            displayLists();
     }else  showListToDos(e)
 
@@ -120,11 +120,11 @@ const handleListActions=(e)=>{
 
 const showListToDos=(e)=>{
     const listName=e.target.getAttribute('data-list');
-    myToDoLists.importLists(JSON.parse(localStorage.getItem('todoLists')));
-    const list=myToDoLists.readList(listName);
-    mainComponent.setTitle(listName)
-    displayListArray(list,listName);
-    mainComponent.addActions('list',listName);
+    importLists(JSON.parse(localStorage.getItem('todoLists')));
+    const list=readList(listName);
+    setTitle(listName)
+    displayListTasks(list,listName);
+    addActions('list',listName);
 }
 
 const removeToDo=(e,list)=>{
@@ -132,78 +132,79 @@ const removeToDo=(e,list)=>{
     if(e.target.nodeName!=='BUTTON') return;
     const todoid=e.target.getAttribute('id');
     const listID=e.target.getAttribute('data-list');
-    myToDoLists.removeToDoFromList(todoid,listID);
-    displayListArray(myToDoLists.readList(listID),listID);
+    removeToDoFromList(todoid,listID);
+    displayListTasks(readList(listID),listID);
 }
 
-showTodoLists.addEventListener('click',()=>{  
+showTodoListsBtn.addEventListener('click',()=>{  
     displayLists();
 })
 
 const displayTaskDetail=(todoID)=>{
-mainComponent.Cards.innerHTML=""; 
-mainComponent.setTitle(todos.readToDo(todoID).title);
+Cards.innerHTML=""; 
+setTitle(todos.readToDo(todoID).title);
 const innerContent=todoDetail();
 innerContent.populateContainer(todos.readToDo(todoID));
-mainComponent.Cards.append(innerContent.dialogContainer);
-mainComponent.Cards.addEventListener('click',(e)=>detailClicks(e,todoID,innerContent))
+Cards.append(innerContent.dialogContainer);
+Cards.addEventListener('click',(e)=>detailClicks(e,todoID,innerContent))
 }
 
 const detailClicks=(e,todoID,container)=>{
  if(e.target.nodeName==='BUTTON' && e.target.getAttribute('data-action')==='update'){
     const {title,description,dueDate,priority,status}=container.readContainer();
     todos.updateToDo(todoID,title,description,dueDate,priority,status);
-    displayListArray(todos.getList(),'All Tasks')
+    displayListTasks(todos.getList(),'All Tasks')
  }
 }
 
-dialog.addEventListener('close',(e)=>{
+dialog.addEventListener('close',()=>handleDialogAction());
+
+const handleDialogAction=()=>{
     if(dialog.returnValue==='null') return;
-    const returnValues=JSON.parse(dialog.returnValue);
-    const {title,description,duedate,priority,status}=returnValues
+    const {title,description,duedate,priority,status}=JSON.parse(dialog.returnValue);
     const todoID=todos.createToDo(title,description,duedate,priority,status);
-    displayListArray(todos.getList(),"All Tasks");
-})
+    displayListTasks(todos.getList(),"All Tasks");  
+}
 
 listDialog.addEventListener('close',()=>{
     if((listDialog.returnValue)==="null") return;
-    myToDoLists.createList(listDialog.returnValue);
+    createList(listDialog.returnValue);
     displayLists();
 });
 
 ImportDialog.addEventListener('close',()=>{
     const dialogReturn=JSON.parse(ImportDialog.returnValue); 
-    myToDoLists.addToDoToList(dialogReturn.taskID,dialogReturn.listID);
-    displayListArray(myToDoLists.readList(dialogReturn.listID),dialogReturn.listID);
+    addToDoToList(dialogReturn.taskID,dialogReturn.listID);
+    displayListTasks(readList(dialogReturn.listID),dialogReturn.listID);
 });
 
-Tasks.addEventListener('click',()=>{
+showAllTasksBtn.addEventListener('click',()=>{
     displayAllTasks();
 });
 
 const displayAllTasks=()=>{
-    mainComponent.Cards.innerHTML='';
-    mainComponent.setTitle('All Tasks');
+    Cards.innerHTML='';
+    setTitle('All Tasks');
     for(let id of todos.getList()){
         if(!isTaskCompleted(id)){
             displayToDo(id,{allTasks:todos.getList()});
         }
     }
-    mainComponent.addActions('todos',"All Tasks");
+    addActions('todos',"All Tasks");
 }
 
 const displayClosedTasks=()=>{
-    mainComponent.Cards.innerHTML='';
-    mainComponent.setTitle('Completed Tasks');
+    Cards.innerHTML='';
+    setTitle('Completed Tasks');
     for(let id of todos.getList()){
         if(isTaskCompleted(id)){
-            displayToDo(id,{closedTasks});
+            displayToDo(id,{'closedTasks':todos.getList()});
         }
     } 
-    mainComponent.addActions('noActions',"Closed Tasks"); 
+    addActions('noActions',"Closed Tasks"); 
 }
 
-closedTasks.addEventListener('click',displayClosedTasks)
+showClosedTasksBtn.addEventListener('click',displayClosedTasks);
 
 const isTaskDueToday=(taskID)=>{
     return (todos.readToDo(taskID).dueDate===new Date().toISOString().slice(0, 10));
@@ -218,22 +219,29 @@ todos.getList().map((taskID)=>{
        today.addToList(todos.readToDo(taskID));
     }
 })
-const displayToday=()=>{
-    mainComponent.Cards.innerHTML="";
-    mainComponent.setTitle("Today")
-    for(let taskID of todos.getList()){
-        if(isTaskDueToday(taskID) && (!isTaskCompleted(taskID))) displayToDo(taskID,{today});
-    }
-    mainComponent.insertSubtitle("Completed Tasks")
-    for(let taskID of todos.getList()){
+
+const displayCompletedTodayTasks=()=>{
+    for(let taskID of todos.getList()){   //display completed tasks
         if(isTaskDueToday(taskID)&& isTaskCompleted(taskID)) displayToDo(taskID,{today});
     }
-    mainComponent.addActions('todos',"Today");
+}
+const displayOpenTodayTasks=()=>{
+    for(let taskID of todos.getList()){  //display uncommplted tasks
+        if(isTaskDueToday(taskID) && (!isTaskCompleted(taskID))) displayToDo(taskID,{today});
+    }
+}
+const displayToday=()=>{
+    Cards.innerHTML="";
+    setTitle("Today");
+    displayOpenTodayTasks();
+    insertSubtitle("Completed Tasks");
+    displayCompletedTodayTasks();
+    addActions('todos',"Today");
 }
 displayToday(); //default view when the app starts
-todayBtn.addEventListener('click',displayToday);
+showTodayBtn.addEventListener('click',displayToday);
 
-content.append(sidebar,mainComponent.Main);
+content.append(sidebar,Main);
 
 
  
