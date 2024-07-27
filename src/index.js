@@ -157,9 +157,11 @@ const detailClicks=(e,todoID,container)=>{
  }
 }
 
-dialog.addEventListener('close',()=>handleDialogAction());
+dialog.addEventListener('close',(e)=>handleDialogAction(e));
 
-const handleDialogAction=()=>{
+const handleDialogAction=(e)=>{
+    e.preventDefault();
+    if (!e.target.querySelector('form').checkValidity()) return;
     if(dialog.returnValue==='null') return;
     const {title,description,duedate,priority,status}=JSON.parse(dialog.returnValue);
     const todoID=todos.createToDo(title,description,duedate,priority,status);

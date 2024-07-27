@@ -1,9 +1,8 @@
-import {Input,Button,Label,Select} from './Utilities';
+import {Input,Button,Label,Select,checkInputValidity} from './Utilities';
 
     const dialog= document.createElement('dialog');
     dialog.classList.add('dialog');
-    
-    
+  
     const todoDetail=()=>{
         const dialogContainer=document.createElement('div');
         dialogContainer.classList.add('container')
@@ -12,8 +11,20 @@ import {Input,Button,Label,Select} from './Utilities';
         dialogForm.setAttribute('method','dialog');
         dialogForm.classList.add('container');
 
+        const taskName= document.createElement('p');
+        const taskNameError= document.createElement('span');
+        taskNameError.classList.add('error');
         const taskNameInput= new Input('text','task','Task','taskInput','text-input');
-        taskNameInput.requried=true;
+        taskName.append(taskNameInput,taskNameError);
+        taskName.classList.add('flex-column')
+        taskNameInput.required=true;
+        taskNameInput.setAttribute('minlength',"2");
+        taskNameInput.setAttribute('maxlength',"40");
+        taskNameInput.onblur=()=>{console.log('focus on me',taskNameInput.checkValidity(),taskNameInput.validationMessage,taskNameInput.validity.tooShort,taskNameInput.getAttribute("minlength"));
+            if(!taskNameInput.valid){
+            // taskNameInput.classList.add('invalid');
+            taskNameError.textContent=taskNameInput.validationMessage;
+        } };
         const descriptionInput=new Input('text','description','Description','taskInput');
         const dueDateInput = new Input('date','duedate','due date','dueDateInput');
         dueDateInput.value= new Date().toISOString().slice(0, 10);
@@ -34,10 +45,11 @@ import {Input,Button,Label,Select} from './Utilities';
         const btnSubmit =Button('Add Task',null,'submit btn btn-primary','dialog')
         btnSubmit.setAttribute('data-action','add');
     
-        dialogForm.append(taskNameInput,descriptionInput,dueDateInput,priorityGroup,statusGroup);
+        dialogForm.append(taskName,descriptionInput,dueDateInput,priorityGroup,statusGroup);
         
         dialogContainer.append(dialogForm,btnSubmit)
         btnSubmit.addEventListener('click',(e)=>{
+            if (!dialogForm.checkValidity()) return;    
             if(e.target.getAttribute('data-action')!=='add') return;
             e.preventDefault();
             const returnValues={'title':taskNameInput.value,description:descriptionInput.value,'duedate':dueDateInput.value,'priority':prioritySelect.value,status:statusSelect.value};

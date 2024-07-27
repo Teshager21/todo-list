@@ -244,11 +244,27 @@ dialog{
     cursor: pointer;
 }
 
+.error{
+    font-size: 0.8rem;
+    color:tomato;
+    padding-top: 0.1rem;
+}
 
+#importTasks{
+    height: 30wh;
+}
+
+#importTaskSelect{
+    height: 90%;
+}
 
 .cardLeft{
     display: flex;
     gap: 1rem;
+}
+
+.invalid{
+    border-color:tomato;
 }
 
 .flex-column {

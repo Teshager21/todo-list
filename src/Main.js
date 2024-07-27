@@ -50,10 +50,11 @@ const addActions=(type,listID)=>{
     if(type==='todos') Actions.append(addTodoBtn);
     if(type==='noAction'){}
 // Actions.append(addTodoBtn);
+
     }
-    actionBar
-        .append(Title,Actions)
-        actionBar.classList.add('actionBar');
+
+    actionBar.append(Title,Actions);
+    actionBar.classList.add('actionBar');
     Main.append(actionBar,Cards);
 
     const insertSubtitle=(text)=>{

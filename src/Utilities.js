@@ -42,6 +42,11 @@ function Select(name,id,options,classList){
     return select;
 }
 
+const checkInputValidity=(input)=>{
+    if(!input.valid){ checkInputValidity(input)
+    input.parentElement.querySelector('.error').textContent=input.validationMessage;
+}
+}
 
 
-export {Input,Button,Label,Select}
+export {Input,Button,Label,Select,checkInputValidity}
