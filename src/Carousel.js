@@ -2,11 +2,11 @@ const Carousel=()=>{
 let urlCached;
 const carouselWrapper= document.createElement('div');
 const toRight= document.createElement('i');
-toRight.classList.add("fas", "fa-chevron-right","arrow");
+toRight.classList.add("fas", "fa-chevron-circle-right","arrow");
 toRight.setAttribute('id','toRight');
 
 const toLeft= document.createElement('i');
-toLeft.classList.add("fas", "fa-chevron-left","arrow-left");
+toLeft.classList.add("fas", "fa-chevron-circle-left","arrow-left");
 toLeft.setAttribute('id','toLeft');
 
 carouselWrapper.classList.add('wrapper', 'flex');
@@ -20,6 +20,7 @@ const CarouselItem=(url)=>{
 }
 
 const moveRight=(img_urls)=>{
+    // console.log('i am called')
     const shifted=img_urls.shift();
     img_urls.push(shifted);
     const carousel=buildACarousel(img_urls);
@@ -68,7 +69,13 @@ const displayImages= (urls)=>{
     return carouselWrapper;
 }
 
-return {carouselWrapper,displayImages}
+    const autoRotate=(interval)=>{    
+            setInterval(()=>{
+                if(urlCached!==undefined) moveRight(urlCached)}
+                ,interval)
+    }
+    
+return {carouselWrapper,displayImages,autoRotate};
 }
 
 

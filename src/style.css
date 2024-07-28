@@ -293,13 +293,15 @@ dialog{
 .arrow{
     position: absolute;
     top:25%;
-    right:0;
+    right:0%;
+    height: 2rem;
 }
 
 .arrow-left{
   position: absolute;
   top: 25%;
-  left:0;  
+  left:0%; 
+  height: 2rem; 
 }
 .flex-column {
     display: flex;

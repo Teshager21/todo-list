@@ -9,7 +9,7 @@ import menuPic from './resources/menu.png'
 import Menu from './Menu';
 import Carousel from './Carousel';
 
-let {carouselWrapper,displayImages}=Carousel();
+let {carouselWrapper,displayImages,autoRotate}=Carousel();
 let {allToDoLists,createList,readList,deleteList,updateList,addToList,removeToDoFromList,addToDoToList,importLists}= ToDoLists();
 //-------------THE VIEW------------------------------------------//
 const {sidebar,showTodoListsBtn,showAllTasksBtn,showTodayBtn,showClosedTasksBtn,addTodoBtn,actionableImgsBtn}=Sidebar;
@@ -261,9 +261,12 @@ const importPics = async ()=>{
 
 const actionableImagesCarousel=async ()=>{
     Main.innerHTML='';
-    const carouselComponenet=await importPics().then(displayImages);
+    const carouselComponenet=(await importPics().then(displayImages));
     Main.append(carouselComponenet);
+    
 }
+autoRotate(5000); 
+
 
 actionableImgsBtn.addEventListener('click',actionableImagesCarousel);
 
