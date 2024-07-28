@@ -9,17 +9,19 @@ import main from './Main'
     sidebar.classList.add('aside');
     const showTodayBtn= new Button("Today",null,'btn btn-silent')
     const showTodoListsBtn=Button("Todo Lists",null,'btn btn-silent');
-    //Tasks btn
+    //Tasks btn 
     const showAllTasksBtn=Button('All Tasks',null,'btn btn-silent');
+    //actionable btn
+    const actionableImgsBtn=Button('Actionable Images','actionableImgsBtn','btn btn-silent');
     //closed Tasks btn
     const showClosedTasksBtn=Button('Closed Tasks',null,'btn btn-silent');
     addTodoBtn.addEventListener('click',()=>dialog.showModal());
-    sidebar.append(showTodayBtn,showAllTasksBtn,showTodoListsBtn,showClosedTasksBtn,addTodoBtn,addListBtn,dialog);
+    sidebar.append(showTodayBtn,showAllTasksBtn,showTodoListsBtn,showClosedTasksBtn,addTodoBtn,addListBtn,dialog,actionableImgsBtn);
 
 //     return {sidebar,showTodoListsBtn,showAllTasksBtn,showTodayBtn,showClosedTasksBtn,addTodoBtn,addListBtn,dialog};
     
 // }
- const Sidebar={sidebar,showTodoListsBtn,showAllTasksBtn,showTodayBtn,showClosedTasksBtn,addTodoBtn,addListBtn,dialog};
+ const Sidebar={sidebar,showTodoListsBtn,showAllTasksBtn,showTodayBtn,showClosedTasksBtn,addTodoBtn,addListBtn,dialog,actionableImgsBtn};
 
 export default Sidebar;
 // export {sidebar,showTodoLists,Tasks,todayBtn,closedTasks,addTodoBtn};

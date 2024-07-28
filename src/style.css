@@ -267,9 +267,47 @@ dialog{
     border-color:tomato;
 }
 
+.carousel{
+    width: 60rem;
+    overflow: hidden;
+    display: flex;
+    align-content: center;
+}
+
+.carousel-img{
+    height: 50%;
+    width:auto ;
+}
+
+
+.wrapper{
+    margin:auto;
+    width: 80vw;
+    overflow: hidden;
+    position:relative;
+    display: flex;
+    justify-content: center;
+    justify-self: center;
+}
+
+.arrow{
+    position: absolute;
+    top:25%;
+    right:0;
+}
+
+.arrow-left{
+  position: absolute;
+  top: 25%;
+  left:0;  
+}
 .flex-column {
     display: flex;
     flex-direction: column;
+}
+
+.flex{
+    display: flex;
 }
 
 .text-sm{

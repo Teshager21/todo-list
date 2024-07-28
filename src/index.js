@@ -7,15 +7,15 @@ import {dialog,listDialog,ImportDialog,setOptions,todoDetail} from './Dialog';
 import './style.css';
 import menuPic from './resources/menu.png'
 import Menu from './Menu';
+import Carousel from './Carousel';
 
-
+let {carouselWrapper,displayImages}=Carousel();
 let {allToDoLists,createList,readList,deleteList,updateList,addToList,removeToDoFromList,addToDoToList,importLists}= ToDoLists();
 //-------------THE VIEW------------------------------------------//
-const {sidebar,showTodoListsBtn,showAllTasksBtn,showTodayBtn,showClosedTasksBtn,addTodoBtn}=Sidebar;
+const {sidebar,showTodoListsBtn,showAllTasksBtn,showTodayBtn,showClosedTasksBtn,addTodoBtn,actionableImgsBtn}=Sidebar;
 const {Main,Cards,Actions,addTodoCard,addListCard,addActions,setTitle,insertSubtitle}=main();
 const {menu,addListBtn}=Menu();
 
-console.log(document.forms);
 const content= document.createElement('div');
 content.classList.add('content');
 content.setAttribute('id','content');
@@ -243,7 +243,31 @@ const displayToday=()=>{
 displayToday(); //default view when the app starts
 showTodayBtn.addEventListener('click',displayToday);
 
-content.append(sidebar,Main);
+content.append(sidebar,Main);   
+
+
+
+// =============================================================================
+//      PROMISES,ASYNC,API,CAROUSELS
+// =============================================================================
+const importPics = async ()=>{
+    const data= await fetch('https://api.github.com/users');
+    const parsedData= await data.json();
+    const avatarURLs=parsedData.map((data)=>{
+         return data.avatar_url;
+    })
+    return avatarURLs;
+}
+
+const actionableImagesCarousel=async ()=>{
+    Main.innerHTML='';
+    const carouselComponenet=await importPics().then(displayImages);
+    Main.append(carouselComponenet);
+}
+
+actionableImgsBtn.addEventListener('click',actionableImagesCarousel);
+
+
 
 
  

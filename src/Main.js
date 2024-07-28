@@ -2,9 +2,10 @@ import  { ImportDialog,dialog } from './Dialog';
 import {todoCard,listCard} from "./ToDoCard";
 import { Button } from './Utilities';
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
-import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
+import { faCheck, faChevronCircleRight, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faFlag } from '@fortawesome/free-regular-svg-icons';
 
-library.add(faCheck);
+library.add(faCheck,faFlag,faChevronRight,faChevronLeft);
 dom.watch();
 
 const main=()=>{
