@@ -19,8 +19,8 @@ const toggleDot=(order)=>{
 nav.addEventListener('click',(e)=>handleNavigationClicks(e))
 const handleNavigationClicks=(e)=>{
      moving=true;
-     toggleDot(e.target.getAttribute('data-order'));
-     moveToSelectedSlide();
+    //  toggleDot(e.target.getAttribute('data-order'));
+     moveToSelectedSlide(parseInt(e.target.getAttribute('data-order')));
      moving=false;
 }
 
@@ -48,8 +48,10 @@ const CarouselItem=(url)=>{
     carouselItem.classList.add('background');    
     return carouselItem;
 }
-const moveToSelectedSlide=()=>{
-    const selectedSlide=parseInt(nav.querySelector('.solid').getAttribute('data-order'));
+const moveToSelectedSlide=(selectedSlide)=>{
+    moving=true;
+    // const selectedSlide;
+    // selectedSlide || selectedSlide=parseInt(nav.querySelector('.solid').getAttribute('data-order'));
     const urls= [...OriginalUrls];
     const shiftedUrls=urls.splice(0,selectedSlide);
     const newUrls=[...urls,...shiftedUrls];
@@ -57,6 +59,7 @@ const moveToSelectedSlide=()=>{
     carouselWrapper.innerHTML=''; 
     carouselWrapper.append(carousel);
     toggleDot(selectedSlide);
+    moving=false;
     return carouselWrapper;   
 }
 const moveRight=(img_urls)=>{

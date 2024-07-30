@@ -1,6 +1,6 @@
 "use strict"
 
-const ToDoList=(name)=>{
+const ToDoList=((name)=>{
     
 let id=name;
  let todoList=[];
@@ -22,9 +22,9 @@ let id=name;
 
  return {getID,getList,addToList,removeFromList}
 
-}
+})();
 
-const ToDoLists=()=>{
+const ToDoLists=(()=>{
     let todoLists;
     if(localStorage.getItem('todoLists')===null){
         localStorage.setItem('todoLists',JSON.stringify({}));
@@ -73,6 +73,6 @@ const createList=(name)=>{
    };
 
 return {allToDoLists,createList,readList,deleteList,updateList,addToList,removeToDoFromList,addToDoToList,importLists}
-}
+})();
 
 export {ToDoList,ToDoLists};
