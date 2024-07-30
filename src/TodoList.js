@@ -15,7 +15,6 @@ let id=name;
  }
   const addToList=(todoID)=>{
   todoList.push(todoID);
-//   localStorage.setItem('todoLists',JSON.stringify(todoLists));
  };
   const removeFromList=(todoID)=>{
    todoList.splice(todoList.indexOf(todoID),1);

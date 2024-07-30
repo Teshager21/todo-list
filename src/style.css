@@ -271,7 +271,8 @@ dialog{
     width: 60rem;
     overflow: hidden;
     display: flex;
-    align-content: center;
+    /* align-content: center; */
+    align-items: center;
 }
 
 .carousel-img{
@@ -279,30 +280,57 @@ dialog{
     width:auto ;
 }
 
-
+.background{
+    background-size: contain;
+    background: center center no-repeat;
+    background-repeat: no-repeat;
+    height: 100%;
+    min-width: 20rem;
+}
 .wrapper{
-    margin:auto;
-    width: 80vw;
+   align-self: center;
+    height: 50vh;
     overflow: hidden;
     position:relative;
     display: flex;
     justify-content: center;
-    justify-self: center;
+    border: 1px solid blue;
+    align-content:center;
 }
 
 .arrow{
     position: absolute;
-    top:25%;
+    top:50%;
     right:0%;
     height: 2rem;
+    cursor: pointer;
+    columns: white;
 }
 
 .arrow-left{
-  position: absolute;
-  top: 25%;
-  left:0%; 
-  height: 2rem; 
+    position: absolute;
+    top: 50%;
+    left:0%; 
+    height: 2rem;
+    cursor: pointer; 
+  }
+
+.solid{
+    background-color: tomato;
 }
+
+.gap-1{
+    gap:1rem;
+}
+
+.circle{
+    border:3px solid tomato;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+}
+
+
 .flex-column {
     display: flex;
     flex-direction: column;

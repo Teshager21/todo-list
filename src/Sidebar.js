@@ -2,7 +2,6 @@
 import {dialog}from "./Dialog";
 import { Button } from "./Utilities";
 import main from './Main'
-// const Sidebar=()=>{
     const {addTodoBtn,addListBtn}=main();
    
     const sidebar=document.createElement('aside');
@@ -17,11 +16,6 @@ import main from './Main'
     const showClosedTasksBtn=Button('Closed Tasks',null,'btn btn-silent');
     addTodoBtn.addEventListener('click',()=>dialog.showModal());
     sidebar.append(showTodayBtn,showAllTasksBtn,showTodoListsBtn,showClosedTasksBtn,addTodoBtn,addListBtn,dialog,actionableImgsBtn);
-
-//     return {sidebar,showTodoListsBtn,showAllTasksBtn,showTodayBtn,showClosedTasksBtn,addTodoBtn,addListBtn,dialog};
-    
-// }
  const Sidebar={sidebar,showTodoListsBtn,showAllTasksBtn,showTodayBtn,showClosedTasksBtn,addTodoBtn,addListBtn,dialog,actionableImgsBtn};
 
 export default Sidebar;
-// export {sidebar,showTodoLists,Tasks,todayBtn,closedTasks,addTodoBtn};
